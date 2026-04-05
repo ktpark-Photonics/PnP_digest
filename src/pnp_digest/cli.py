@@ -7,28 +7,13 @@ from pathlib import Path
 
 import typer
 
-from pnp_digest.domain import (
-    DocumentRecord,
-    FigureAsset,
-    IngestArtifact,
-    NormalizedArtifact,
-    OutputBundle,
-    PipelineRun,
-    RawSourceRecord,
-    RelevanceAssessment,
-    ReviewTask,
-    SummaryPayload,
-    VerificationResult,
-)
-from pnp_digest.pipelines.ingest import run_ingest
-from pnp_digest.pipelines.normalize import run_normalize
-from pnp_digest.services.io import write_json
-
 app = typer.Typer(help="CIS 주간 기술 브리프 배치 파이프라인 CLI")
 
 
-def build_run(run_id: str, operator: str, week_start: date | None = None) -> PipelineRun:
+def build_run(run_id: str, operator: str, week_start: date | None = None):
     """CLI 실행에 사용할 기본 `PipelineRun`을 생성한다."""
+
+    from pnp_digest.domain import PipelineRun
 
     return PipelineRun(
         run_id=run_id,
@@ -40,9 +25,38 @@ def build_run(run_id: str, operator: str, week_start: date | None = None) -> Pip
     )
 
 
+def parse_iso_date(value: str | None, option_name: str = "--week-start") -> date | None:
+    """CLI 문자열 입력을 ISO 날짜로 파싱한다."""
+
+    if value is None:
+        return None
+
+    try:
+        return date.fromisoformat(value)
+    except ValueError as error:
+        raise typer.BadParameter(
+            f"{option_name}는 YYYY-MM-DD 형식의 날짜여야 합니다. 예: 2026-04-05"
+        ) from error
+
+
 @app.command("export-schemas")
 def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
     """핵심 canonical schema를 JSON schema 파일로 내보낸다."""
+
+    from pnp_digest.domain import (
+        DocumentRecord,
+        FigureAsset,
+        IngestArtifact,
+        NormalizedArtifact,
+        OutputBundle,
+        PipelineRun,
+        RawSourceRecord,
+        RelevanceAssessment,
+        ReviewTask,
+        SummaryPayload,
+        VerificationResult,
+    )
+    from pnp_digest.services.io import write_json
 
     models = [
         PipelineRun,
@@ -69,11 +83,17 @@ def ingest(
     input_path: Path = typer.Option(..., exists=True, dir_okay=False, help="로컬 fixture JSON 경로"),
     artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
     operator: str = typer.Option("manual", help="실행 주체"),
-    week_start: date | None = typer.Option(None, help="브리프 기준 시작일"),
+    week_start: str | None = typer.Option(None, help="브리프 기준 시작일 (YYYY-MM-DD)"),
 ) -> None:
     """로컬 fixture를 ingest artifact로 저장한다."""
 
-    run = build_run(run_id=run_id, operator=operator, week_start=week_start)
+    from pnp_digest.pipelines.ingest import run_ingest
+
+    run = build_run(
+        run_id=run_id,
+        operator=operator,
+        week_start=parse_iso_date(week_start),
+    )
     artifact = run_ingest(run=run, input_path=input_path, artifact_root=artifact_root)
     typer.echo(f"ingest 완료: {len(artifact.raw_records)}건")
 
@@ -85,6 +105,8 @@ def normalize(
     artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
 ) -> None:
     """ingest artifact를 정규화된 문헌 목록으로 변환한다."""
+
+    from pnp_digest.pipelines.normalize import run_normalize
 
     artifact = run_normalize(
         run_id=run_id,
@@ -160,3 +182,7 @@ def render() -> None:
 
     typer.echo("Phase 0에서는 render가 아직 skeleton 상태입니다.")
     announce_phase_stub("render")
+
+
+if __name__ == "__main__":
+    app()
