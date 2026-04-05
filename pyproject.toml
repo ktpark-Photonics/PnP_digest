@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pnp-digest"
+version = "0.1.0"
+description = "CIS 주간 기술 브리프 생성을 위한 내부 파이프라인 MVP"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [
+  { name = "PnP Digest Team" }
+]
+dependencies = [
+  "pydantic>=2.8,<3.0",
+  "typer>=0.12,<1.0",
+  "sqlalchemy>=2.0,<3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.2,<9.0",
+  "pytest-cov>=5.0,<6.0",
+]
+
+[project.scripts]
+pnp-digest = "pnp_digest.cli:app"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src",
+]
+testpaths = [
+  "tests",
+]

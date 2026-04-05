@@ -1,0 +1,2 @@
+[console_scripts]
+pnp-digest = pnp_digest.cli:app

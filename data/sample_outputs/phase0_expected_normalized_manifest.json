@@ -1,0 +1,146 @@
+{
+  "documents": [
+    {
+      "abstract_text": "Synthetic fixture only. Provides a sample patent-like payload used to test normalization and future verification contracts.",
+      "canonical_title": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+      "canonical_url": "https://example.invalid/patents/sample-us-000001-a1",
+      "dedup_candidate_keys": [
+        "patent_number:sample-us-000001-a1",
+        "title_hash:523c06dfb97e9349"
+      ],
+      "document_id": "patent:number:sample-us-000001-a1",
+      "document_type": "patent",
+      "fingerprint": "e2476552528c20426f2a37f3c218e0fb238a4da98811096597591e61c9de9408",
+      "language": "en",
+      "metadata": {
+        "applicants": [
+          "Sample Imaging Corp."
+        ],
+        "application_number": "SAMPLE-US-APP-000001",
+        "assignees": [
+          "Sample Imaging Corp."
+        ],
+        "cpc_codes": [
+          "H04N25/55",
+          "H01L27/146"
+        ],
+        "family_id": "SAMPLE-FAM-000001",
+        "filing_date": "2025-10-10",
+        "grant_date": null,
+        "inventors": [
+          "Alex Fixture",
+          "Taylor Example"
+        ],
+        "ipc_codes": [
+          "H04N25/55"
+        ],
+        "jurisdiction": "US",
+        "metadata_type": "patent",
+        "patent_number": "SAMPLE-US-000001-A1",
+        "publication_date": "2026-03-20"
+      },
+      "publication_date": "2026-03-20",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-patent-cis-001",
+        "raw-patent-cis-001-dup"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only. Describes a sample CIS architecture for testing ingest and normalization.",
+      "canonical_title": "[SAMPLE] Low-noise backside illumination architecture for CMOS image sensors",
+      "canonical_url": "https://example.invalid/papers/sample-cis-001",
+      "dedup_candidate_keys": [
+        "doi:10-0000-sample-cis-001",
+        "title_hash:8b22436e459afc45"
+      ],
+      "document_id": "paper:doi:10-0000-sample-cis-001",
+      "document_type": "paper",
+      "fingerprint": "27b8d1c6b4a17a14c529f7018ac3b2642362936ff87fda59b8734789ab7f386e",
+      "language": "en",
+      "metadata": {
+        "authors": [
+          "Kim Sample",
+          "Lee Fixture"
+        ],
+        "doi": "10.0000/sample-cis-001",
+        "license": "sample-fixture-only",
+        "metadata_type": "paper",
+        "pdf_url": "https://example.invalid/papers/sample-cis-001.pdf",
+        "publication_type": "conference",
+        "publisher": "Fixture Publisher",
+        "venue": "Sample CIS Workshop"
+      },
+      "publication_date": "2026-03-28",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-paper-cis-001"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only. Focuses on readout chain considerations for a stacked CIS pipeline.",
+      "canonical_title": "[SAMPLE] Wide dynamic range readout chain for stacked CIS",
+      "canonical_url": "https://example.invalid/papers/sample-cis-002",
+      "dedup_candidate_keys": [
+        "doi:10-0000-sample-cis-002",
+        "title_hash:e3e38aac09b0b8bd"
+      ],
+      "document_id": "paper:doi:10-0000-sample-cis-002",
+      "document_type": "paper",
+      "fingerprint": "d261157c1aef6700a2c55d1089b14da0c9687f9033882001cabd7b891b1b9e42",
+      "language": "en",
+      "metadata": {
+        "authors": [
+          "Park Sample"
+        ],
+        "doi": "10.0000/sample-cis-002",
+        "license": "sample-fixture-only",
+        "metadata_type": "paper",
+        "pdf_url": "https://example.invalid/papers/sample-cis-002.pdf",
+        "publication_type": "journal",
+        "publisher": "Fixture Publisher",
+        "venue": "Fixture Sensor Letters"
+      },
+      "publication_date": "2026-03-29",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-paper-cis-002"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only. Included as a non-CIS control sample for later relevance testing.",
+      "canonical_title": "[SAMPLE] Silicon battery electrode interface optimization",
+      "canonical_url": "https://example.invalid/papers/sample-misc-001",
+      "dedup_candidate_keys": [
+        "doi:10-0000-sample-misc-001",
+        "title_hash:26a8df57c35c441a"
+      ],
+      "document_id": "paper:doi:10-0000-sample-misc-001",
+      "document_type": "paper",
+      "fingerprint": "e55287996f905b3c1e7452da55dc6f7fdcd4c27876837435b04e1a8c76dfa1b6",
+      "language": "en",
+      "metadata": {
+        "authors": [
+          "Choi Sample"
+        ],
+        "doi": "10.0000/sample-misc-001",
+        "license": "sample-fixture-only",
+        "metadata_type": "paper",
+        "pdf_url": "https://example.invalid/papers/sample-misc-001.pdf",
+        "publication_type": "journal",
+        "publisher": "Fixture Publisher",
+        "venue": "Fixture Energy Journal"
+      },
+      "publication_date": "2026-03-20",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-paper-noncis-001"
+      ]
+    }
+  ],
+  "run_id": "phase0-sample"
+}

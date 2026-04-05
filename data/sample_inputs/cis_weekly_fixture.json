@@ -1,0 +1,155 @@
+[
+  {
+    "fixture_id": "paper-cis-001",
+    "source_type": "local_fixture",
+    "source_name": "sample_paper_feed",
+    "query": "cmos image sensor weekly",
+    "source_url": "https://example.invalid/papers/sample-cis-001",
+    "fetched_at": "2026-04-01T09:00:00Z",
+    "payload": {
+      "document_type": "paper",
+      "title": "[SAMPLE] Low-noise backside illumination architecture for CMOS image sensors",
+      "abstract_text": "Synthetic fixture only. Describes a sample CIS architecture for testing ingest and normalization.",
+      "publication_date": "2026-03-28",
+      "language": "en",
+      "canonical_url": "https://example.invalid/papers/sample-cis-001",
+      "doi": "10.0000/sample-cis-001",
+      "authors": [
+        "Kim Sample",
+        "Lee Fixture"
+      ],
+      "venue": "Sample CIS Workshop",
+      "publisher": "Fixture Publisher",
+      "publication_type": "conference",
+      "license": "sample-fixture-only",
+      "pdf_url": "https://example.invalid/papers/sample-cis-001.pdf"
+    }
+  },
+  {
+    "fixture_id": "paper-cis-002",
+    "source_type": "local_fixture",
+    "source_name": "sample_paper_feed",
+    "query": "cmos image sensor weekly",
+    "source_url": "https://example.invalid/papers/sample-cis-002",
+    "fetched_at": "2026-04-01T09:10:00Z",
+    "payload": {
+      "document_type": "paper",
+      "title": "[SAMPLE] Wide dynamic range readout chain for stacked CIS",
+      "abstract_text": "Synthetic fixture only. Focuses on readout chain considerations for a stacked CIS pipeline.",
+      "publication_date": "2026-03-29",
+      "language": "en",
+      "canonical_url": "https://example.invalid/papers/sample-cis-002",
+      "doi": "10.0000/sample-cis-002",
+      "authors": [
+        "Park Sample"
+      ],
+      "venue": "Fixture Sensor Letters",
+      "publisher": "Fixture Publisher",
+      "publication_type": "journal",
+      "license": "sample-fixture-only",
+      "pdf_url": "https://example.invalid/papers/sample-cis-002.pdf"
+    }
+  },
+  {
+    "fixture_id": "paper-noncis-001",
+    "source_type": "local_fixture",
+    "source_name": "sample_misc_feed",
+    "query": "technology weekly",
+    "source_url": "https://example.invalid/papers/sample-misc-001",
+    "fetched_at": "2026-04-01T09:15:00Z",
+    "payload": {
+      "document_type": "paper",
+      "title": "[SAMPLE] Silicon battery electrode interface optimization",
+      "abstract_text": "Synthetic fixture only. Included as a non-CIS control sample for later relevance testing.",
+      "publication_date": "2026-03-20",
+      "language": "en",
+      "canonical_url": "https://example.invalid/papers/sample-misc-001",
+      "doi": "10.0000/sample-misc-001",
+      "authors": [
+        "Choi Sample"
+      ],
+      "venue": "Fixture Energy Journal",
+      "publisher": "Fixture Publisher",
+      "publication_type": "journal",
+      "license": "sample-fixture-only",
+      "pdf_url": "https://example.invalid/papers/sample-misc-001.pdf"
+    }
+  },
+  {
+    "fixture_id": "patent-cis-001",
+    "source_type": "local_fixture",
+    "source_name": "sample_patent_feed_a",
+    "query": "cmos image sensor patent weekly",
+    "source_url": "https://example.invalid/patents/sample-us-000001-a1",
+    "fetched_at": "2026-04-01T09:30:00Z",
+    "payload": {
+      "document_type": "patent",
+      "title": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+      "abstract_text": "Synthetic fixture only. Provides a sample patent-like payload used to test normalization and future verification contracts.",
+      "publication_date": "2026-03-20",
+      "filing_date": "2025-10-10",
+      "grant_date": null,
+      "language": "en",
+      "canonical_url": "https://example.invalid/patents/sample-us-000001-a1",
+      "patent_number": "SAMPLE-US-000001-A1",
+      "application_number": "SAMPLE-US-APP-000001",
+      "jurisdiction": "US",
+      "applicants": [
+        "Sample Imaging Corp."
+      ],
+      "assignees": [
+        "Sample Imaging Corp."
+      ],
+      "inventors": [
+        "Alex Fixture",
+        "Taylor Example"
+      ],
+      "cpc_codes": [
+        "H04N25/55",
+        "H01L27/146"
+      ],
+      "ipc_codes": [
+        "H04N25/55"
+      ],
+      "family_id": "SAMPLE-FAM-000001"
+    }
+  },
+  {
+    "fixture_id": "patent-cis-001-dup",
+    "source_type": "local_fixture",
+    "source_name": "sample_patent_feed_b",
+    "query": "cis patents",
+    "source_url": "https://example.invalid/patents/sample-us-000001-a1?mirror=1",
+    "fetched_at": "2026-04-01T09:40:00Z",
+    "payload": {
+      "document_type": "patent",
+      "title": "  [SAMPLE] Pixel isolation structure for CMOS image sensor  ",
+      "abstract_text": "Synthetic fixture only. Duplicate source entry for the same sample patent to test dedup behavior.",
+      "publication_date": "2026-03-20",
+      "filing_date": "2025-10-10",
+      "grant_date": null,
+      "language": "en",
+      "canonical_url": "https://example.invalid/patents/sample-us-000001-a1",
+      "patent_number": "SAMPLE-US-000001-A1",
+      "application_number": "SAMPLE-US-APP-000001",
+      "jurisdiction": "US",
+      "applicants": [
+        "Sample Imaging Corp."
+      ],
+      "assignees": [
+        "Sample Imaging Corp."
+      ],
+      "inventors": [
+        "Alex Fixture",
+        "Taylor Example"
+      ],
+      "cpc_codes": [
+        "H04N25/55"
+      ],
+      "ipc_codes": [
+        "H04N25/55"
+      ],
+      "family_id": "SAMPLE-FAM-000001"
+    }
+  }
+]

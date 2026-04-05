@@ -1,3 +1,17 @@
+Metadata-Version: 2.4
+Name: pnp-digest
+Version: 0.1.0
+Summary: CIS 주간 기술 브리프 생성을 위한 내부 파이프라인 MVP
+Author: PnP Digest Team
+Requires-Python: >=3.12
+Description-Content-Type: text/markdown
+Requires-Dist: pydantic<3.0,>=2.8
+Requires-Dist: typer<1.0,>=0.12
+Requires-Dist: sqlalchemy<3.0,>=2.0
+Provides-Extra: dev
+Requires-Dist: pytest<9.0,>=8.2; extra == "dev"
+Requires-Dist: pytest-cov<6.0,>=5.0; extra == "dev"
+
 # PnP Digest
 
 CIS 분야 최신 논문 및 특허를 주간 단위로 수집하고, 구조화 요약과 검수 가능한 기술 브리프를 만들기 위한 내부 도구다.

@@ -1,0 +1,55 @@
+{
+  "DocumentRecord": {
+    "required": [
+      "document_id",
+      "document_type",
+      "canonical_title",
+      "fingerprint",
+      "metadata"
+    ],
+    "properties": [
+      "schema_version",
+      "document_id",
+      "document_type",
+      "canonical_title",
+      "abstract_text",
+      "publication_date",
+      "language",
+      "canonical_url",
+      "source_record_ids",
+      "fingerprint",
+      "review_status",
+      "dedup_candidate_keys",
+      "metadata"
+    ]
+  },
+  "SummaryPayload": {
+    "required": [
+      "background_context",
+      "problem_statement",
+      "purpose",
+      "core_idea",
+      "expected_effect",
+      "evidence_links_or_snippets",
+      "entry_level_explanation",
+      "manager_level_explanation",
+      "director_level_explanation",
+      "summary_confidence"
+    ],
+    "properties": [
+      "schema_version",
+      "background_context",
+      "problem_statement",
+      "purpose",
+      "core_idea",
+      "expected_effect",
+      "limitations_or_unknowns",
+      "evidence_links_or_snippets",
+      "entry_level_explanation",
+      "manager_level_explanation",
+      "director_level_explanation",
+      "summary_confidence",
+      "human_review_notes"
+    ]
+  }
+}

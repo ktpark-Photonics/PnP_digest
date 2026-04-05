@@ -1,0 +1,17 @@
+[
+  {
+    "item_id": "evidence-link",
+    "prompt": "각 요약 필드가 근거 snippet 또는 링크와 연결되어 있는가?",
+    "required": true
+  },
+  {
+    "item_id": "patent-match",
+    "prompt": "특허번호, 제목, 출원인/권리자, 날짜 정보가 서로 일치하는가?",
+    "required": true
+  },
+  {
+    "item_id": "figure-license",
+    "prompt": "figure 또는 도면의 재사용 근거가 확인되었는가?",
+    "required": true
+  }
+]

@@ -1,0 +1,24 @@
+domain_name = "cmos_image_sensor"
+synonyms = ["cis", "cmos image sensor", "image sensor"]
+positive_terms = [
+  "backside illumination",
+  "stacked cis",
+  "pixel isolation",
+  "readout chain",
+  "dark current",
+  "quantum efficiency"
+]
+negative_terms = [
+  "battery electrode",
+  "cathode",
+  "anode"
+]
+classification_allowlist = [
+  "H04N25/55",
+  "H01L27/146"
+]
+classification_denylist = []
+
+[thresholds]
+relevant_min = 0.75
+borderline_min = 0.50
