@@ -1,0 +1,9 @@
+# CIS 관련 허용 키워드 초안
+cmos image sensor
+cis
+stacked cis
+backside illumination
+pixel isolation
+readout chain
+quantum efficiency
+low-noise

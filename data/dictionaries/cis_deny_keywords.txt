@@ -1,0 +1,6 @@
+# CIS 비관련 키워드 초안
+battery electrode
+cathode
+anode
+electrolyte
+lithium plating

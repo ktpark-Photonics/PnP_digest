@@ -47,10 +47,12 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         DocumentRecord,
         FigureAsset,
         IngestArtifact,
+        ManualReviewManifest,
         NormalizedArtifact,
         OutputBundle,
         PipelineRun,
         RawSourceRecord,
+        RelevanceArtifact,
         RelevanceAssessment,
         ReviewTask,
         SummaryPayload,
@@ -63,6 +65,7 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         RawSourceRecord,
         DocumentRecord,
         RelevanceAssessment,
+        RelevanceArtifact,
         VerificationResult,
         SummaryPayload,
         FigureAsset,
@@ -70,6 +73,7 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         OutputBundle,
         IngestArtifact,
         NormalizedArtifact,
+        ManualReviewManifest,
     ]
     for model in models:
         file_path = output_dir / f"{model.__name__}.schema.json"
@@ -125,11 +129,27 @@ def announce_phase_stub(stage_name: str) -> None:
 
 
 @app.command("assess-relevance")
-def assess_relevance() -> None:
-    """관련성 판정 stage skeleton."""
+def assess_relevance(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    normalized_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="normalized artifact 경로"),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    dictionary_dir: Path = typer.Option(Path("data/dictionaries"), exists=True, file_okay=False, help="규칙 사전 디렉터리"),
+) -> None:
+    """규칙 기반 관련성 판정을 수행하고 결과 artifact를 저장한다."""
 
-    typer.echo("Phase 0에서는 assess-relevance가 아직 skeleton 상태입니다.")
-    announce_phase_stub("assess-relevance")
+    from pnp_digest.pipelines.assess_relevance import run_assess_relevance
+
+    relevance_artifact, review_manifest = run_assess_relevance(
+        run_id=run_id,
+        normalized_artifact_path=normalized_artifact,
+        artifact_root=artifact_root,
+        dictionary_dir=dictionary_dir,
+    )
+    typer.echo(
+        "assess-relevance 완료: "
+        f"{len(relevance_artifact.assessments)}건 판정, "
+        f"{len(review_manifest.items)}건 수동 검토"
+    )
 
 
 @app.command("verify")

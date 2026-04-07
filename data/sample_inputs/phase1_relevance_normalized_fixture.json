@@ -1,0 +1,106 @@
+{
+  "documents": [
+    {
+      "abstract_text": "Stacked CIS readout chain with quantum efficiency enhancement",
+      "canonical_title": "Low-noise CMOS image sensor with backside illumination",
+      "canonical_url": "https://example.invalid/paper:doi:relevant",
+      "dedup_candidate_keys": [
+        "title_hash:paper:doi:relevant"
+      ],
+      "document_id": "paper:doi:relevant",
+      "document_type": "paper",
+      "fingerprint": "fingerprint-paper:doi:relevant",
+      "language": "en",
+      "metadata": {
+        "authors": [
+          "Tester"
+        ],
+        "doi": "10.0000/paper:doi:relevant",
+        "license": "fixture",
+        "metadata_type": "paper",
+        "pdf_url": "https://example.invalid/paper:doi:relevant.pdf",
+        "publication_type": "journal",
+        "publisher": "Fixture Publisher",
+        "venue": "Fixture Venue"
+      },
+      "publication_date": "2026-04-01",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-paper:doi:relevant"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only.",
+      "canonical_title": "Readout chain optimization for mixed-signal camera front-end",
+      "canonical_url": "https://example.invalid/paper:doi:borderline",
+      "dedup_candidate_keys": [
+        "title_hash:paper:doi:borderline"
+      ],
+      "document_id": "paper:doi:borderline",
+      "document_type": "paper",
+      "fingerprint": "fingerprint-paper:doi:borderline",
+      "language": "en",
+      "metadata": {
+        "authors": [
+          "Tester"
+        ],
+        "doi": "10.0000/paper:doi:borderline",
+        "license": "fixture",
+        "metadata_type": "paper",
+        "pdf_url": "https://example.invalid/paper:doi:borderline.pdf",
+        "publication_type": "journal",
+        "publisher": "Fixture Publisher",
+        "venue": "Fixture Venue"
+      },
+      "publication_date": "2026-04-01",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-paper:doi:borderline"
+      ]
+    },
+    {
+      "abstract_text": "Cathode and anode balancing in electrolyte system",
+      "canonical_title": "Battery electrode interface for lithium plating stability",
+      "canonical_url": "https://example.invalid/paper:doi:not-relevant",
+      "dedup_candidate_keys": [
+        "title_hash:paper:doi:not-relevant"
+      ],
+      "document_id": "paper:doi:not-relevant",
+      "document_type": "paper",
+      "fingerprint": "fingerprint-paper:doi:not-relevant",
+      "language": "en",
+      "metadata": {
+        "authors": [
+          "Tester"
+        ],
+        "doi": "10.0000/paper:doi:not-relevant",
+        "license": "fixture",
+        "metadata_type": "paper",
+        "pdf_url": "https://example.invalid/paper:doi:not-relevant.pdf",
+        "publication_type": "journal",
+        "publisher": "Fixture Publisher",
+        "venue": "Fixture Venue"
+      },
+      "publication_date": "2026-04-01",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-paper:doi:not-relevant"
+      ]
+    }
+  ],
+  "run": {
+    "config_version": "phase1-default",
+    "domain": "cmos_image_sensor",
+    "ended_at": null,
+    "operator": "tester",
+    "run_id": "phase1-threeway-fixture",
+    "schema_version": "0.1.0",
+    "stage_status": {},
+    "started_at": "2026-04-01T09:00:00Z",
+    "week_start": "2026-03-30"
+  },
+  "schema_version": "0.1.0"
+}

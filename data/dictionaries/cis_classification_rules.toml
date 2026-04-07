@@ -1,0 +1,25 @@
+# Phase 1 규칙 기반 관련성 분류 설정 초안
+synonym_terms = [
+  "cmos image sensor",
+  "image sensor",
+  "cis"
+]
+
+base_score = 0.20
+allow_term_weight = 0.22
+deny_term_weight = -0.45
+synonym_weight = 0.10
+
+[classification]
+allowlist = [
+  "H04N25/55",
+  "H01L27/146"
+]
+denylist = [
+  "H01M4/13",
+  "H01M10/052"
+]
+allow_weight = 0.25
+deny_weight = -0.50
+relevant_min = 0.70
+borderline_min = 0.40

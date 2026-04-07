@@ -351,3 +351,30 @@ class NormalizedArtifact(DigestBaseModel):
     schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
     run: PipelineRun = Field(description="연결된 실행 정보")
     documents: list[DocumentRecord] = Field(default_factory=list, description="정규화된 문헌 목록")
+
+
+class RelevanceArtifact(DigestBaseModel):
+    """assess-relevance 단계 산출물."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    assessments: list[RelevanceAssessment] = Field(default_factory=list, description="문헌별 관련성 판정 결과")
+
+
+class ManualReviewItem(DigestBaseModel):
+    """수동 검토 대상 요약 항목."""
+
+    document_id: str = Field(description="검토 대상 문헌 ID")
+    final_decision: RelevanceDecision = Field(description="관련성 판정")
+    rule_score: float = Field(ge=0.0, le=1.0, description="규칙 점수")
+    decision_reason: str = Field(description="검토 필요 사유")
+    evidence_locators: list[str] = Field(default_factory=list, description="검토자가 볼 근거 locator 목록")
+
+
+class ManualReviewManifest(DigestBaseModel):
+    """수동 검토가 필요한 문헌 목록."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run_id: str = Field(description="연결된 run ID")
+    review_stage: ReviewStage = Field(default=ReviewStage.RELEVANCE, description="검토 단계")
+    items: list[ManualReviewItem] = Field(default_factory=list, description="수동 검토 항목")
