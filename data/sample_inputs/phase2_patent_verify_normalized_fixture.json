@@ -1,0 +1,188 @@
+{
+  "documents": [
+    {
+      "abstract_text": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+      "canonical_title": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+      "canonical_url": "https://example.invalid/patent:number:sample-us-match-001-a1",
+      "dedup_candidate_keys": [
+        "patent_number:sample-us-match-001-a1"
+      ],
+      "document_id": "patent:number:sample-us-match-001-a1",
+      "document_type": "patent",
+      "fingerprint": "fingerprint-patent:number:sample-us-match-001-a1",
+      "language": "en",
+      "metadata": {
+        "applicants": [
+          "Sample Imaging Corp."
+        ],
+        "application_number": "APP-SAMPLE-US-MATCH-001-A1",
+        "assignees": [
+          "Sample Imaging Corp."
+        ],
+        "cpc_codes": [
+          "H04N25/55"
+        ],
+        "family_id": "FAM-SAMPLE-US-MATCH-001-A1",
+        "filing_date": "2025-01-10",
+        "grant_date": null,
+        "inventors": [
+          "Tester"
+        ],
+        "ipc_codes": [
+          "H04N25/55"
+        ],
+        "jurisdiction": "US",
+        "metadata_type": "patent",
+        "patent_number": "SAMPLE-US-MATCH-001-A1",
+        "publication_date": "2026-03-20"
+      },
+      "publication_date": "2026-03-20",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-patent:number:sample-us-match-001-a1"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only. Describes timing control for a stacked CIS readout chain.",
+      "canonical_title": "[SAMPLE] Stacked CIS readout timing architecture",
+      "canonical_url": "https://example.invalid/patent:number:sample-us-partial-001-a1",
+      "dedup_candidate_keys": [
+        "patent_number:sample-us-partial-001-a1"
+      ],
+      "document_id": "patent:number:sample-us-partial-001-a1",
+      "document_type": "patent",
+      "fingerprint": "fingerprint-patent:number:sample-us-partial-001-a1",
+      "language": "en",
+      "metadata": {
+        "applicants": [
+          "Photon Sample Labs"
+        ],
+        "application_number": "APP-SAMPLE-US-PARTIAL-001-A1",
+        "assignees": [
+          "Photon Sample Labs"
+        ],
+        "cpc_codes": [
+          "H04N25/55"
+        ],
+        "family_id": "FAM-SAMPLE-US-PARTIAL-001-A1",
+        "filing_date": "2025-02-11",
+        "grant_date": null,
+        "inventors": [
+          "Tester"
+        ],
+        "ipc_codes": [
+          "H04N25/55"
+        ],
+        "jurisdiction": "US",
+        "metadata_type": "patent",
+        "patent_number": "SAMPLE-US-PARTIAL-001-A1",
+        "publication_date": "2026-03-21"
+      },
+      "publication_date": "2026-03-21",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-patent:number:sample-us-partial-001-a1"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only. Describes a dual conversion gain pixel circuit for CIS.",
+      "canonical_title": "[SAMPLE] Dual conversion gain pixel circuit",
+      "canonical_url": "https://example.invalid/patent:number:sample-us-mismatch-001-a1",
+      "dedup_candidate_keys": [
+        "patent_number:sample-us-mismatch-001-a1"
+      ],
+      "document_id": "patent:number:sample-us-mismatch-001-a1",
+      "document_type": "patent",
+      "fingerprint": "fingerprint-patent:number:sample-us-mismatch-001-a1",
+      "language": "en",
+      "metadata": {
+        "applicants": [
+          "Example Sensor Inc."
+        ],
+        "application_number": "APP-SAMPLE-US-MISMATCH-001-A1",
+        "assignees": [
+          "Example Sensor Inc."
+        ],
+        "cpc_codes": [
+          "H04N25/55"
+        ],
+        "family_id": "FAM-SAMPLE-US-MISMATCH-001-A1",
+        "filing_date": "2025-03-12",
+        "grant_date": null,
+        "inventors": [
+          "Tester"
+        ],
+        "ipc_codes": [
+          "H04N25/55"
+        ],
+        "jurisdiction": "US",
+        "metadata_type": "patent",
+        "patent_number": "SAMPLE-US-MISMATCH-001-A1",
+        "publication_date": "2026-03-22"
+      },
+      "publication_date": "2026-03-22",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-patent:number:sample-us-mismatch-001-a1"
+      ]
+    },
+    {
+      "abstract_text": "Synthetic fixture only. Describes wafer-level shielding for sensor modules.",
+      "canonical_title": "[SAMPLE] Wafer-level optical shield for image sensor",
+      "canonical_url": "https://example.invalid/patent:number:sample-us-manual-001-a1",
+      "dedup_candidate_keys": [
+        "patent_number:sample-us-manual-001-a1"
+      ],
+      "document_id": "patent:number:sample-us-manual-001-a1",
+      "document_type": "patent",
+      "fingerprint": "fingerprint-patent:number:sample-us-manual-001-a1",
+      "language": "en",
+      "metadata": {
+        "applicants": [
+          "Vision Fixture Co."
+        ],
+        "application_number": "APP-SAMPLE-US-MANUAL-001-A1",
+        "assignees": [
+          "Vision Fixture Co."
+        ],
+        "cpc_codes": [
+          "H04N25/55"
+        ],
+        "family_id": "FAM-SAMPLE-US-MANUAL-001-A1",
+        "filing_date": "2025-04-13",
+        "grant_date": null,
+        "inventors": [
+          "Tester"
+        ],
+        "ipc_codes": [
+          "H04N25/55"
+        ],
+        "jurisdiction": "US",
+        "metadata_type": "patent",
+        "patent_number": "SAMPLE-US-MANUAL-001-A1",
+        "publication_date": "2026-03-23"
+      },
+      "publication_date": "2026-03-23",
+      "review_status": "pending",
+      "schema_version": "0.1.0",
+      "source_record_ids": [
+        "raw-patent:number:sample-us-manual-001-a1"
+      ]
+    }
+  ],
+  "run": {
+    "config_version": "phase2-default",
+    "domain": "cmos_image_sensor",
+    "ended_at": null,
+    "operator": "tester",
+    "run_id": "phase2-patent-verify",
+    "schema_version": "0.1.0",
+    "stage_status": {},
+    "started_at": "2026-04-01T09:00:00Z",
+    "week_start": "2026-03-30"
+  },
+  "schema_version": "0.1.0"
+}

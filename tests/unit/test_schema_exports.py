@@ -3,7 +3,14 @@
 import json
 from pathlib import Path
 
-from pnp_digest.domain import DocumentRecord, ManualReviewManifest, RelevanceArtifact, SummaryPayload
+from pnp_digest.domain import (
+    DocumentRecord,
+    ManualReviewManifest,
+    RelevanceArtifact,
+    SummaryPayload,
+    VerificationArtifact,
+    VerificationReport,
+)
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -30,6 +37,8 @@ def test_schema_summary_snapshot_matches_models() -> None:
         "SummaryPayload": _schema_summary(SummaryPayload),
         "RelevanceArtifact": _schema_summary(RelevanceArtifact),
         "ManualReviewManifest": _schema_summary(ManualReviewManifest),
+        "VerificationReport": _schema_summary(VerificationReport),
+        "VerificationArtifact": _schema_summary(VerificationArtifact),
     }
 
     assert current == snapshot

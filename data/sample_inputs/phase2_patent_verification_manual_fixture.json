@@ -1,0 +1,360 @@
+{
+  "records": [
+    {
+      "existence_check": {
+        "checked_at": null,
+        "confidence": 0.99,
+        "evidence_source": "manual:review_sheet",
+        "evidence_text": "수동 검토 시트 exact match",
+        "expected_value": "SAMPLE-US-MATCH-001-A1",
+        "notes": "검토자 확인 완료",
+        "observed_value": "SAMPLE-US-MATCH-001-A1",
+        "schema_version": "0.1.0",
+        "status": "matched",
+        "verification_field": "patent_existence"
+      },
+      "field_results": [
+        {
+          "checked_at": null,
+          "confidence": 0.99,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 exact match",
+          "expected_value": "SAMPLE-US-MATCH-001-A1",
+          "notes": null,
+          "observed_value": "SAMPLE-US-MATCH-001-A1",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "patent_number"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.99,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 exact match",
+          "expected_value": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+          "notes": null,
+          "observed_value": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "title"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.99,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 exact match",
+          "expected_value": "Sample Imaging Corp.",
+          "notes": null,
+          "observed_value": "Sample Imaging Corp.",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "applicant_or_assignee"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.99,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 exact match",
+          "expected_value": "2025-01-10",
+          "notes": null,
+          "observed_value": "2025-01-10",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "filing_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.99,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 exact match",
+          "expected_value": "2026-03-20",
+          "notes": null,
+          "observed_value": "2026-03-20",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "publication_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.99,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 exact match",
+          "expected_value": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+          "notes": null,
+          "observed_value": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "summary"
+        }
+      ],
+      "patent_number": "SAMPLE-US-MATCH-001-A1"
+    },
+    {
+      "existence_check": {
+        "checked_at": null,
+        "confidence": 0.92,
+        "evidence_source": "manual:review_sheet",
+        "evidence_text": "수동 검토 시트 partial match",
+        "expected_value": "SAMPLE-US-PARTIAL-001-A1",
+        "notes": "존재 확인됨",
+        "observed_value": "SAMPLE-US-PARTIAL-001-A1",
+        "schema_version": "0.1.0",
+        "status": "matched",
+        "verification_field": "patent_existence"
+      },
+      "field_results": [
+        {
+          "checked_at": null,
+          "confidence": 0.92,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "수동 검토 시트 partial match",
+          "expected_value": "SAMPLE-US-PARTIAL-001-A1",
+          "notes": null,
+          "observed_value": "SAMPLE-US-PARTIAL-001-A1",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "patent_number"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.74,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "제목 일부 축약",
+          "expected_value": "[SAMPLE] Stacked CIS readout timing architecture",
+          "notes": "축약 표기",
+          "observed_value": "Stacked CIS timing architecture",
+          "schema_version": "0.1.0",
+          "status": "partially_matched",
+          "verification_field": "title"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.71,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "법인명 일부 축약",
+          "expected_value": "Photon Sample Labs",
+          "notes": "약식 표기",
+          "observed_value": "Photon Sample",
+          "schema_version": "0.1.0",
+          "status": "partially_matched",
+          "verification_field": "applicant_or_assignee"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.92,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "날짜 일치",
+          "expected_value": "2025-02-11",
+          "notes": null,
+          "observed_value": "2025-02-11",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "filing_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.92,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "날짜 일치",
+          "expected_value": "2026-03-21",
+          "notes": null,
+          "observed_value": "2026-03-21",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "publication_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.7,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "요약 축약",
+          "expected_value": "Synthetic fixture only. Describes timing control for a stacked CIS readout chain.",
+          "notes": "요약 축약",
+          "observed_value": "Timing control for stacked CIS readout chain.",
+          "schema_version": "0.1.0",
+          "status": "partially_matched",
+          "verification_field": "summary"
+        }
+      ],
+      "patent_number": "SAMPLE-US-PARTIAL-001-A1"
+    },
+    {
+      "existence_check": {
+        "checked_at": null,
+        "confidence": 0.9,
+        "evidence_source": "manual:review_sheet",
+        "evidence_text": "수동 검토 시트 mismatch",
+        "expected_value": "SAMPLE-US-MISMATCH-001-A1",
+        "notes": "존재 확인됨",
+        "observed_value": "SAMPLE-US-MISMATCH-001-A1",
+        "schema_version": "0.1.0",
+        "status": "matched",
+        "verification_field": "patent_existence"
+      },
+      "field_results": [
+        {
+          "checked_at": null,
+          "confidence": 0.9,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "특허번호 일치",
+          "expected_value": "SAMPLE-US-MISMATCH-001-A1",
+          "notes": null,
+          "observed_value": "SAMPLE-US-MISMATCH-001-A1",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "patent_number"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.22,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "제목 불일치",
+          "expected_value": "[SAMPLE] Dual conversion gain pixel circuit",
+          "notes": "상이한 기술 분야",
+          "observed_value": "Battery pack thermal control system",
+          "schema_version": "0.1.0",
+          "status": "mismatched",
+          "verification_field": "title"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.2,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "출원인 불일치",
+          "expected_value": "Example Sensor Inc.",
+          "notes": "법인명 불일치",
+          "observed_value": "Other Energy Corp.",
+          "schema_version": "0.1.0",
+          "status": "mismatched",
+          "verification_field": "applicant_or_assignee"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.2,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "출원일 불일치",
+          "expected_value": "2025-03-12",
+          "notes": null,
+          "observed_value": "2025-05-01",
+          "schema_version": "0.1.0",
+          "status": "mismatched",
+          "verification_field": "filing_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.2,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "공개일 불일치",
+          "expected_value": "2026-03-22",
+          "notes": null,
+          "observed_value": "2026-05-30",
+          "schema_version": "0.1.0",
+          "status": "mismatched",
+          "verification_field": "publication_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.19,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "요약 불일치",
+          "expected_value": "Synthetic fixture only. Describes a dual conversion gain pixel circuit for CIS.",
+          "notes": "기술 내용 불일치",
+          "observed_value": "Thermal control for vehicle battery modules.",
+          "schema_version": "0.1.0",
+          "status": "mismatched",
+          "verification_field": "summary"
+        }
+      ],
+      "patent_number": "SAMPLE-US-MISMATCH-001-A1"
+    },
+    {
+      "existence_check": {
+        "checked_at": null,
+        "confidence": 0.86,
+        "evidence_source": "manual:review_sheet",
+        "evidence_text": "수동 검토 시트 manual review",
+        "expected_value": "SAMPLE-US-MANUAL-001-A1",
+        "notes": "존재 확인됨",
+        "observed_value": "SAMPLE-US-MANUAL-001-A1",
+        "schema_version": "0.1.0",
+        "status": "matched",
+        "verification_field": "patent_existence"
+      },
+      "field_results": [
+        {
+          "checked_at": null,
+          "confidence": 0.86,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "특허번호 일치",
+          "expected_value": "SAMPLE-US-MANUAL-001-A1",
+          "notes": null,
+          "observed_value": "SAMPLE-US-MANUAL-001-A1",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "patent_number"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.86,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "제목 일치",
+          "expected_value": "[SAMPLE] Wafer-level optical shield for image sensor",
+          "notes": null,
+          "observed_value": "[SAMPLE] Wafer-level optical shield for image sensor",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "title"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.0,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "출원인 근거가 불충분함",
+          "expected_value": "Vision Fixture Co.",
+          "notes": "원문 스캔 확인 필요",
+          "observed_value": null,
+          "schema_version": "0.1.0",
+          "status": "manual_review_required",
+          "verification_field": "applicant_or_assignee"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.86,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "출원일 일치",
+          "expected_value": "2025-04-13",
+          "notes": null,
+          "observed_value": "2025-04-13",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "filing_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.86,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "공개일 일치",
+          "expected_value": "2026-03-23",
+          "notes": null,
+          "observed_value": "2026-03-23",
+          "schema_version": "0.1.0",
+          "status": "matched",
+          "verification_field": "publication_date"
+        },
+        {
+          "checked_at": null,
+          "confidence": 0.0,
+          "evidence_source": "manual:review_sheet",
+          "evidence_text": "요약 근거가 불충분함",
+          "expected_value": "Synthetic fixture only. Describes wafer-level shielding for sensor modules.",
+          "notes": "전문 검토 필요",
+          "observed_value": null,
+          "schema_version": "0.1.0",
+          "status": "manual_review_required",
+          "verification_field": "summary"
+        }
+      ],
+      "patent_number": "SAMPLE-US-MANUAL-001-A1"
+    }
+  ]
+}

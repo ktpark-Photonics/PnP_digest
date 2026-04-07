@@ -33,6 +33,7 @@ from pnp_digest.domain.models import (
     ReviewTask,
     SampleSourceRecord,
     SummaryPayload,
+    VerificationArtifact,
     VerificationReport,
     VerificationResult,
 )
@@ -69,6 +70,7 @@ __all__ = [
     "StageExecutionStatus",
     "StageName",
     "SummaryPayload",
+    "VerificationArtifact",
     "VerificationReport",
     "VerificationResult",
     "VerificationStatus",

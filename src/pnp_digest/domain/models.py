@@ -192,9 +192,19 @@ class VerificationReport(DigestBaseModel):
 
     schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
     document_id: str = Field(description="대상 문헌 ID")
+    provider_name: str = Field(description="사용한 특허 검증 provider 이름")
     overall_pass: bool = Field(description="전체 검증 통과 여부")
     review_required: bool = Field(description="사람 검수 필요 여부")
+    existence_check: VerificationResult = Field(description="특허 실재 여부 확인 결과")
     results: list[VerificationResult] = Field(default_factory=list, description="필드별 결과")
+
+
+class VerificationArtifact(DigestBaseModel):
+    """verify 단계 산출물."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    reports: list[VerificationReport] = Field(default_factory=list, description="특허 검증 결과 목록")
 
 
 class AudienceExplanation(DigestBaseModel):

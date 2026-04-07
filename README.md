@@ -2,11 +2,12 @@
 
 CIS 분야 최신 논문 및 특허를 주간 단위로 수집하고, 구조화 요약과 검수 가능한 기술 브리프를 만들기 위한 내부 도구다.
 
-현재 구현 범위는 `Phase 1`이며 다음을 포함한다.
+현재 구현 범위는 `Phase 2`이며 다음을 포함한다.
 
 - 핵심 canonical schema 패키지
 - 로컬 fixture 기반 `ingest` / `normalize` 파이프라인
 - 규칙 기반 `assess-relevance` 파이프라인(근거 snippet 및 수동 검토 manifest 생성)
+- mock/manual provider 기반 `verify` 파이프라인(특허 존재 확인 + 핵심 필드 검증)
 - JSON schema export CLI
 - 샘플 입력/출력 데이터
 - 기본 단위/통합 테스트
@@ -26,7 +27,7 @@ CIS 분야 최신 논문 및 특허를 주간 단위로 수집하고, 구조화 
 7. `review`
 8. `render`
 
-Phase 1에서는 `assess-relevance`를 추가 구현했으며, `verify` 이후 단계는 동일 CLI 인터페이스를 가진 skeleton으로 제공한다.
+Phase 2 현재 범위에서는 `assess-relevance`와 `verify`를 구현했으며, `summarize` 이후 단계는 동일 CLI 인터페이스를 가진 skeleton으로 제공한다.
 
 ## WSL 로컬 검증
 
@@ -37,6 +38,7 @@ python3.12 -m venv .venv
 ./.venv/bin/python -m pip install -e ".[dev]"
 ./.venv/bin/python -m pytest -q
 ./.venv/bin/python -m pnp_digest.cli assess-relevance --help
+./.venv/bin/python -m pnp_digest.cli verify --help
 ```
 
 기본 샘플 fixture로 `ingest -> normalize -> assess-relevance`까지 확인하려면:
@@ -67,6 +69,30 @@ python3.12 -m venv .venv
 
 - `artifacts/runs/<run_id>/assess_relevance/relevance_report.json`
 - `artifacts/runs/<run_id>/assess_relevance/manual_review_manifest.json`
+
+특허 검증은 `normalized_artifact`와 provider fixture를 입력으로 실행한다.
+
+```bash
+./.venv/bin/python -m pnp_digest.cli verify \
+  --run-id phase2-patent-verify \
+  --normalized-artifact data/sample_inputs/phase2_patent_verify_normalized_fixture.json \
+  --provider mock \
+  --provider-data data/sample_inputs/phase2_patent_verification_mock_fixture.json
+```
+
+수동 검증 결과를 그대로 반영하려면 `manual` provider를 사용한다.
+
+```bash
+./.venv/bin/python -m pnp_digest.cli verify \
+  --run-id phase2-patent-verify \
+  --normalized-artifact data/sample_inputs/phase2_patent_verify_normalized_fixture.json \
+  --provider manual \
+  --provider-data data/sample_inputs/phase2_patent_verification_manual_fixture.json
+```
+
+`verify` 실행 시 아래 파일이 저장된다.
+
+- `artifacts/runs/<run_id>/verify/verification_report.json`
 
 간단한 결과 확인 예시는 아래와 같다.
 
@@ -106,6 +132,12 @@ Phase 1.1에서는 `assess-relevance` 산출물 계약과 회귀를 테스트로
 ./.venv/bin/python -m pytest -q
 ```
 
+Phase 2 특허 검증만 빠르게 확인하려면:
+
+```bash
+./.venv/bin/python -m pytest -q tests/integration/test_phase2_verify.py
+```
+
 ## 예시 명령
 
 ```bash
@@ -113,12 +145,14 @@ pnp-digest export-schemas
 pnp-digest ingest --run-id 2026w14 --input-path data/sample_inputs/cis_weekly_fixture.json
 pnp-digest normalize --run-id 2026w14 --ingest-artifact artifacts/runs/2026w14/ingest/ingest_artifact.json
 pnp-digest assess-relevance --run-id 2026w14 --normalized-artifact artifacts/runs/2026w14/normalize/normalized_artifact.json
+pnp-digest verify --run-id phase2-patent-verify --normalized-artifact data/sample_inputs/phase2_patent_verify_normalized_fixture.json --provider mock --provider-data data/sample_inputs/phase2_patent_verification_mock_fixture.json
 ```
 
 `assess-relevance` 실행 시 아래 파일이 저장된다.
 
 - `artifacts/runs/<run_id>/assess_relevance/relevance_report.json`
 - `artifacts/runs/<run_id>/assess_relevance/manual_review_manifest.json` (`borderline` 문헌만 포함)
+- `artifacts/runs/<run_id>/verify/verification_report.json`
 
 규칙 사전 초안은 `data/dictionaries/` 아래 파일을 사용한다.
 
@@ -129,7 +163,7 @@ pnp-digest assess-relevance --run-id 2026w14 --normalized-artifact artifacts/run
 ## 현재 제한 사항
 
 - 외부 API 연동은 아직 없다.
-- 특허 실재 검증 로직은 아직 없다.
+- 특허 검증은 아직 mock/manual provider 기반이며 실제 온라인 조회를 하지 않는다.
 - LLM 기반 relevance/요약 생성은 아직 없다.
 - DOCX/PPTX/PDF 렌더링은 아직 없다.
 

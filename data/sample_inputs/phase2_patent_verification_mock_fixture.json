@@ -1,0 +1,43 @@
+{
+  "records": [
+    {
+      "applicant_or_assignee": "Sample Imaging Corp.",
+      "confidence": 0.97,
+      "evidence_source": "mock:sample_patent_registry",
+      "evidence_text": "Mock registry exact match for SAMPLE-US-MATCH-001-A1",
+      "exists": true,
+      "filing_date": "2025-01-10",
+      "notes": "Exact registry hit",
+      "patent_number": "SAMPLE-US-MATCH-001-A1",
+      "publication_date": "2026-03-20",
+      "summary": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+      "title": "[SAMPLE] Pixel isolation structure for CMOS image sensor"
+    },
+    {
+      "applicant_or_assignee": "Photon Sample",
+      "confidence": 0.88,
+      "evidence_source": "mock:sample_patent_registry",
+      "evidence_text": "Mock registry near match for SAMPLE-US-PARTIAL-001-A1",
+      "exists": true,
+      "filing_date": "2025-02-11",
+      "notes": "Observed text is abbreviated",
+      "patent_number": "SAMPLE-US-PARTIAL-001-A1",
+      "publication_date": "2026-03-21",
+      "summary": "Timing control for stacked CIS readout chain.",
+      "title": "Stacked CIS timing architecture"
+    },
+    {
+      "applicant_or_assignee": "Other Energy Corp.",
+      "confidence": 0.82,
+      "evidence_source": "mock:sample_patent_registry",
+      "evidence_text": "Mock registry conflicting record for SAMPLE-US-MISMATCH-001-A1",
+      "exists": true,
+      "filing_date": "2025-05-01",
+      "notes": "Conflicting registry entry",
+      "patent_number": "SAMPLE-US-MISMATCH-001-A1",
+      "publication_date": "2026-05-30",
+      "summary": "Thermal control for vehicle battery modules.",
+      "title": "Battery pack thermal control system"
+    }
+  ]
+}

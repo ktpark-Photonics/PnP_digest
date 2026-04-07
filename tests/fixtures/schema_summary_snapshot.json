@@ -72,5 +72,33 @@
       "review_stage",
       "items"
     ]
+  },
+  "VerificationReport": {
+    "required": [
+      "document_id",
+      "provider_name",
+      "overall_pass",
+      "review_required",
+      "existence_check"
+    ],
+    "properties": [
+      "schema_version",
+      "document_id",
+      "provider_name",
+      "overall_pass",
+      "review_required",
+      "existence_check",
+      "results"
+    ]
+  },
+  "VerificationArtifact": {
+    "required": [
+      "run"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "reports"
+    ]
   }
 }

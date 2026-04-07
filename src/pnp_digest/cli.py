@@ -56,6 +56,8 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         RelevanceAssessment,
         ReviewTask,
         SummaryPayload,
+        VerificationArtifact,
+        VerificationReport,
         VerificationResult,
     )
     from pnp_digest.services.io import write_json
@@ -67,6 +69,8 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         RelevanceAssessment,
         RelevanceArtifact,
         VerificationResult,
+        VerificationReport,
+        VerificationArtifact,
         SummaryPayload,
         FigureAsset,
         ReviewTask,
@@ -153,11 +157,25 @@ def assess_relevance(
 
 
 @app.command("verify")
-def verify() -> None:
-    """검증 stage skeleton."""
+def verify(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    normalized_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="normalized artifact 경로"),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    provider: str = typer.Option("mock", help="특허 검증 provider 이름 (mock/manual)"),
+    provider_data: Path = typer.Option(..., exists=True, dir_okay=False, help="provider 입력 JSON 경로"),
+) -> None:
+    """특허 검증 provider를 사용해 verify artifact를 생성한다."""
 
-    typer.echo("Phase 0에서는 verify가 아직 skeleton 상태입니다.")
-    announce_phase_stub("verify")
+    from pnp_digest.pipelines.verify import run_verify
+
+    artifact = run_verify(
+        run_id=run_id,
+        normalized_artifact_path=normalized_artifact,
+        artifact_root=artifact_root,
+        provider_name=provider,
+        provider_data_path=provider_data,
+    )
+    typer.echo(f"verify 완료: {len(artifact.reports)}건 특허 검증")
 
 
 @app.command("summarize")
