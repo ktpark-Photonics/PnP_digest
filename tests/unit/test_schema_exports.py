@@ -3,10 +3,20 @@
 import json
 from pathlib import Path
 
-from pnp_digest.domain import DocumentRecord, SummaryPayload
+from pnp_digest.domain import DocumentRecord, ManualReviewManifest, RelevanceArtifact, SummaryPayload
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def _schema_summary(model: type) -> dict[str, list[str]]:
+    """모델의 상위 schema shape를 요약한다."""
+
+    schema = model.model_json_schema()
+    return {
+        "required": schema.get("required", []),
+        "properties": list(schema.get("properties", {}).keys()),
+    }
 
 
 def test_schema_summary_snapshot_matches_models() -> None:
@@ -15,18 +25,11 @@ def test_schema_summary_snapshot_matches_models() -> None:
     snapshot_path = PROJECT_ROOT / "tests/fixtures/schema_summary_snapshot.json"
     snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
 
-    document_schema = DocumentRecord.model_json_schema()
-    summary_schema = SummaryPayload.model_json_schema()
-
     current = {
-        "DocumentRecord": {
-            "required": document_schema.get("required", []),
-            "properties": list(document_schema.get("properties", {}).keys()),
-        },
-        "SummaryPayload": {
-            "required": summary_schema.get("required", []),
-            "properties": list(summary_schema.get("properties", {}).keys()),
-        },
+        "DocumentRecord": _schema_summary(DocumentRecord),
+        "SummaryPayload": _schema_summary(SummaryPayload),
+        "RelevanceArtifact": _schema_summary(RelevanceArtifact),
+        "ManualReviewManifest": _schema_summary(ManualReviewManifest),
     }
 
     assert current == snapshot

@@ -1,107 +1,67 @@
 """Phase 1 규칙 기반 관련성 판정 통합 테스트."""
 
-from datetime import UTC, date, datetime
+import json
 from pathlib import Path
 
 from typer.testing import CliRunner
 
 from pnp_digest.cli import app
-from pnp_digest.domain import (
-    DocumentRecord,
-    DocumentType,
-    ManualReviewManifest,
-    NormalizedArtifact,
-    PaperMetadata,
-    PipelineRun,
-    RelevanceArtifact,
-    RelevanceDecision,
-)
-from pnp_digest.services.io import read_model, write_model
+from pnp_digest.domain import ManualReviewManifest, RelevanceArtifact, RelevanceDecision
+from pnp_digest.services.io import read_json, read_model
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 runner = CliRunner()
 
 
-def _build_paper_document(document_id: str, title: str, abstract_text: str) -> DocumentRecord:
-    """테스트용 논문 문헌을 생성한다."""
+def _load_snapshot(file_name: str) -> dict:
+    """기대 snapshot JSON을 읽는다."""
 
-    return DocumentRecord(
-        document_id=document_id,
-        document_type=DocumentType.PAPER,
-        canonical_title=title,
-        abstract_text=abstract_text,
-        publication_date=date(2026, 4, 1),
-        language="en",
-        canonical_url=f"https://example.invalid/{document_id}",
-        source_record_ids=[f"raw-{document_id}"],
-        fingerprint=f"fingerprint-{document_id}",
-        dedup_candidate_keys=[f"title_hash:{document_id}"],
-        metadata=PaperMetadata(
-            doi=f"10.0000/{document_id}",
-            authors=["Tester"],
-            venue="Fixture Venue",
-            publisher="Fixture Publisher",
-            publication_type="journal",
-            license="fixture",
-            pdf_url=f"https://example.invalid/{document_id}.pdf",
-        ),
-    )
+    snapshot_path = PROJECT_ROOT / "tests" / "fixtures" / file_name
+    return json.loads(snapshot_path.read_text(encoding="utf-8"))
+
+
+def _normalize_report_snapshot(report_payload: dict) -> dict:
+    """동적 stage 필드를 placeholder로 정규화한다."""
+
+    stage_state = report_payload["run"]["stage_status"]["assess_relevance"]
+    stage_state["updated_at"] = "__DYNAMIC_UPDATED_AT__"
+    stage_state["artifact_path"] = "__DYNAMIC_ARTIFACT_PATH__"
+    return report_payload
 
 
 def test_assess_relevance_cli_creates_report_and_manual_manifest(tmp_path: Path) -> None:
-    """관련/경계/비관련 샘플에 대해 판정 결과와 수동 검토 manifest를 생성해야 한다."""
+    """고정 fixture에 대해 산출물 계약과 판정 결과를 검증해야 한다."""
 
-    run = PipelineRun(
-        run_id="phase1-relevance",
-        domain="cmos_image_sensor",
-        week_start=date(2026, 3, 30),
-        started_at=datetime(2026, 4, 1, 9, 0, tzinfo=UTC),
-        operator="tester",
-        config_version="phase1-default",
-    )
-
-    relevant_doc = _build_paper_document(
-        document_id="paper:doi:relevant",
-        title="Low-noise CMOS image sensor with backside illumination",
-        abstract_text="Stacked CIS readout chain with quantum efficiency enhancement",
-    )
-    borderline_doc = _build_paper_document(
-        document_id="paper:doi:borderline",
-        title="Readout chain optimization for mixed-signal camera front-end",
-        abstract_text="Synthetic fixture only.",
-    )
-    not_relevant_doc = _build_paper_document(
-        document_id="paper:doi:not-relevant",
-        title="Battery electrode interface for lithium plating stability",
-        abstract_text="Cathode and anode balancing in electrolyte system",
-    )
-
-    normalized_artifact = NormalizedArtifact(
-        run=run,
-        documents=[relevant_doc, borderline_doc, not_relevant_doc],
-    )
-    normalized_path = tmp_path / "artifacts" / "runs" / run.run_id / "normalize" / "normalized_artifact.json"
-    write_model(normalized_path, normalized_artifact)
+    run_id = "phase1-threeway-fixture"
+    normalized_path = PROJECT_ROOT / "data" / "sample_inputs" / "phase1_relevance_normalized_fixture.json"
+    artifact_root = tmp_path / "artifacts" / "runs"
 
     result = runner.invoke(
         app,
         [
             "assess-relevance",
             "--run-id",
-            run.run_id,
+            run_id,
             "--normalized-artifact",
             str(normalized_path),
             "--artifact-root",
-            str(tmp_path / "artifacts" / "runs"),
+            str(artifact_root),
             "--dictionary-dir",
-            "data/dictionaries",
+            str(PROJECT_ROOT / "data" / "dictionaries"),
         ],
     )
     assert result.exit_code == 0
 
-    stage_dir = tmp_path / "artifacts" / "runs" / run.run_id / "assess_relevance"
-    report = read_model(stage_dir / "relevance_report.json", RelevanceArtifact)
-    manifest = read_model(stage_dir / "manual_review_manifest.json", ManualReviewManifest)
+    stage_dir = artifact_root / run_id / "assess_relevance"
+    report_path = stage_dir / "relevance_report.json"
+    manifest_path = stage_dir / "manual_review_manifest.json"
+
+    assert report_path.exists()
+    assert manifest_path.exists()
+
+    report = read_model(report_path, RelevanceArtifact)
+    manifest = read_model(manifest_path, ManualReviewManifest)
 
     assert len(report.assessments) == 3
 
@@ -115,3 +75,9 @@ def test_assess_relevance_cli_creates_report_and_manual_manifest(tmp_path: Path)
 
     assert len(manifest.items) == 1
     assert manifest.items[0].document_id == "paper:doi:borderline"
+
+    normalized_report = _normalize_report_snapshot(read_json(report_path))
+    manifest_payload = read_json(manifest_path)
+
+    assert normalized_report == _load_snapshot("phase1_relevance_report_snapshot.json")
+    assert manifest_payload == _load_snapshot("phase1_manual_review_manifest_snapshot.json")

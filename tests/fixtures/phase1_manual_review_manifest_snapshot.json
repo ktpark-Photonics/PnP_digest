@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "decision_reason": "allow_terms=1, synonym_terms=0, deny_terms=0, allow_classes=0, deny_classes=0",
+      "document_id": "paper:doi:borderline",
+      "evidence_locators": [
+        "title+abstract"
+      ],
+      "final_decision": "borderline",
+      "rule_score": 0.42
+    }
+  ],
+  "review_stage": "relevance",
+  "run_id": "phase1-threeway-fixture",
+  "schema_version": "0.1.0"
+}

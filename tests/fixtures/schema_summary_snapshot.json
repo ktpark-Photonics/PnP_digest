@@ -51,5 +51,26 @@
       "summary_confidence",
       "human_review_notes"
     ]
+  },
+  "RelevanceArtifact": {
+    "required": [
+      "run"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "assessments"
+    ]
+  },
+  "ManualReviewManifest": {
+    "required": [
+      "run_id"
+    ],
+    "properties": [
+      "schema_version",
+      "run_id",
+      "review_stage",
+      "items"
+    ]
   }
 }

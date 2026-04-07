@@ -82,6 +82,30 @@ python3.12 -m venv .venv
 - 모든 문헌의 `evidence_links_or_snippets` 길이 >= 1
 - `manual_review_manifest.json`에는 `borderline` 문헌만 포함
 
+## Phase 1.1 계약 테스트
+
+Phase 1.1에서는 `assess-relevance` 산출물 계약과 회귀를 테스트로 고정한다.
+
+- `tests/unit/test_schema_exports.py`: `RelevanceArtifact`, `ManualReviewManifest`를 포함한 상위 schema shape snapshot 검증
+- `tests/integration/test_phase1_relevance.py`: 고정 `normalized_artifact` 입력에 대한 `relevance_report.json`, `manual_review_manifest.json` snapshot 검증
+
+스냅샷 실패는 보통 아래 둘 중 하나를 의미한다.
+
+- 산출물 JSON 포맷이 바뀌었다.
+- 규칙 파일 변경으로 점수, 판정, 근거, 수동 검토 결과가 달라졌다.
+
+빠른 실행 명령:
+
+```bash
+./.venv/bin/python -m pytest -q tests/unit/test_schema_exports.py tests/integration/test_phase1_relevance.py
+```
+
+전체 테스트 실행:
+
+```bash
+./.venv/bin/python -m pytest -q
+```
+
 ## 예시 명령
 
 ```bash

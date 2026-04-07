@@ -1,0 +1,114 @@
+{
+  "assessments": [
+    {
+      "decision_reason": "allow_terms=7, synonym_terms=3, deny_terms=0, allow_classes=0, deny_classes=0",
+      "document_id": "paper:doi:relevant",
+      "evidence_links_or_snippets": [
+        {
+          "locator": "title+abstract",
+          "snippet_text": "용어 매칭: backside illumination, cis, cmos image sensor, low-noise, quantum efficiency, readout chain, stacked cis, cis, cmos image sensor, image sensor",
+          "source_url": "https://example.invalid/paper:doi:relevant",
+          "supports_fields": [
+            "matched_terms",
+            "rule_score",
+            "final_decision"
+          ]
+        }
+      ],
+      "final_decision": "relevant",
+      "llm_score": null,
+      "matched_classifications": [],
+      "matched_terms": [
+        "allow:backside illumination",
+        "allow:cis",
+        "allow:cmos image sensor",
+        "allow:low-noise",
+        "allow:quantum efficiency",
+        "allow:readout chain",
+        "allow:stacked cis",
+        "synonym:cis",
+        "synonym:cmos image sensor",
+        "synonym:image sensor"
+      ],
+      "metadata_score": 1.0,
+      "review_required": false,
+      "rule_score": 1.0,
+      "schema_version": "0.1.0"
+    },
+    {
+      "decision_reason": "allow_terms=1, synonym_terms=0, deny_terms=0, allow_classes=0, deny_classes=0",
+      "document_id": "paper:doi:borderline",
+      "evidence_links_or_snippets": [
+        {
+          "locator": "title+abstract",
+          "snippet_text": "용어 매칭: readout chain",
+          "source_url": "https://example.invalid/paper:doi:borderline",
+          "supports_fields": [
+            "matched_terms",
+            "rule_score",
+            "final_decision"
+          ]
+        }
+      ],
+      "final_decision": "borderline",
+      "llm_score": null,
+      "matched_classifications": [],
+      "matched_terms": [
+        "allow:readout chain"
+      ],
+      "metadata_score": 0.42,
+      "review_required": true,
+      "rule_score": 0.42,
+      "schema_version": "0.1.0"
+    },
+    {
+      "decision_reason": "allow_terms=0, synonym_terms=0, deny_terms=5, allow_classes=0, deny_classes=0",
+      "document_id": "paper:doi:not-relevant",
+      "evidence_links_or_snippets": [
+        {
+          "locator": "title+abstract",
+          "snippet_text": "용어 매칭: anode, battery electrode, cathode, electrolyte, lithium plating",
+          "source_url": "https://example.invalid/paper:doi:not-relevant",
+          "supports_fields": [
+            "matched_terms",
+            "rule_score",
+            "final_decision"
+          ]
+        }
+      ],
+      "final_decision": "not_relevant",
+      "llm_score": null,
+      "matched_classifications": [],
+      "matched_terms": [
+        "deny:anode",
+        "deny:battery electrode",
+        "deny:cathode",
+        "deny:electrolyte",
+        "deny:lithium plating"
+      ],
+      "metadata_score": 0.0,
+      "review_required": false,
+      "rule_score": 0.0,
+      "schema_version": "0.1.0"
+    }
+  ],
+  "run": {
+    "config_version": "phase1-default",
+    "domain": "cmos_image_sensor",
+    "ended_at": null,
+    "operator": "tester",
+    "run_id": "phase1-threeway-fixture",
+    "schema_version": "0.1.0",
+    "stage_status": {
+      "assess_relevance": {
+        "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+        "message": "관련성 판정 3건, 수동 검토 1건",
+        "status": "completed",
+        "updated_at": "__DYNAMIC_UPDATED_AT__"
+      }
+    },
+    "started_at": "2026-04-01T09:00:00Z",
+    "week_start": "2026-03-30"
+  },
+  "schema_version": "0.1.0"
+}
