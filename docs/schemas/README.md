@@ -41,6 +41,6 @@
 - `VerificationReviewResolutionArtifact`: 사람이 수정한 review CSV를 다시 JSON으로 가져온 결과 artifact
 - `SummaryArtifact`: `approved` 검토 결과만 모은 summarize 단계 artifact
 - `ExplainArtifact`: `summary_artifact`에서 직급별 설명 블록만 분리한 explain 단계 artifact
-- `RenderArtifact`: Markdown brief 출력 경로와 bundle 메타데이터를 담는 render 단계 artifact
+- `RenderArtifact`: Markdown, DOCX, PDF 또는 PPTX brief 출력 경로와 bundle 메타데이터를 담는 render 단계 artifact
 
 이 디렉터리의 JSON schema 파일은 코드 변경 후 수동으로 다시 생성해 최신 상태를 유지한다.

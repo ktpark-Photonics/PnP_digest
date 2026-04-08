@@ -306,17 +306,28 @@ def render(
     run_id: str = typer.Option(..., help="주간 실행 ID"),
     explain_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="explain artifact 경로"),
     artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
-    output_path: Path | None = typer.Option(None, help="생성할 Markdown brief 경로"),
-    title: str = typer.Option("PnP Digest Brief", help="Markdown brief 제목"),
+    output_type: str = typer.Option("markdown", help="render 출력 형식 (markdown/docx/pdf/pptx)"),
+    output_path: Path | None = typer.Option(None, help="생성할 brief 파일 경로"),
+    title: str = typer.Option("PnP Digest Brief", help="brief 제목"),
 ) -> None:
-    """explain artifact를 Markdown brief와 render artifact로 변환한다."""
+    """explain artifact를 Markdown, DOCX, PDF 또는 PPTX brief와 render artifact로 변환한다."""
 
+    from pnp_digest.domain import OutputType
     from pnp_digest.pipelines.render import run_render
+
+    try:
+        normalized_output_type = OutputType(output_type.strip().lower())
+    except ValueError as error:
+        raise typer.BadParameter(
+            "render 출력 형식은 markdown, docx, pdf 또는 pptx 이어야 합니다.",
+            param_hint="--output-type",
+        ) from error
 
     artifact, written_path = run_render(
         run_id=run_id,
         explain_artifact_path=explain_artifact,
         artifact_root=artifact_root,
+        output_type=normalized_output_type,
         output_path=output_path,
         brief_title=title,
     )

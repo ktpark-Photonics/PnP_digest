@@ -1,0 +1,234 @@
+{
+  "markdown": {
+    "artifact": {
+      "bundles": [
+        {
+          "approval_status": "draft",
+          "bundle_id": "phase4-render-fixture:markdown-brief",
+          "included_document_ids": [
+            "patent:number:sample-us-partial-001-a1",
+            "patent:number:sample-us-match-001-a1"
+          ],
+          "output_path": "__DYNAMIC_OUTPUT_PATH__",
+          "output_type": "markdown",
+          "run_id": "phase4-render-fixture",
+          "schema_version": "0.1.0",
+          "template_version": "phase4-markdown-v1"
+        }
+      ],
+      "run": {
+        "config_version": "phase4-default",
+        "domain": "cmos_image_sensor",
+        "ended_at": null,
+        "operator": "tester",
+        "run_id": "phase4-render-fixture",
+        "schema_version": "0.1.0",
+        "stage_status": {
+          "render": {
+            "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+            "message": "markdown brief 2건 문헌으로 생성 완료",
+            "status": "completed",
+            "updated_at": "__DYNAMIC_UPDATED_AT__"
+          }
+        },
+        "started_at": "2026-04-08T09:00:00Z",
+        "week_start": "2026-04-06"
+      },
+      "schema_version": "0.1.0"
+    },
+    "output": {
+      "brief_text": "# CIS Weekly Brief\n\n- run_id: phase4-render-fixture\n- document_count: 2\n\n## [SAMPLE] Stacked CIS readout timing architecture\n\n- document_id: patent:number:sample-us-partial-001-a1\n- document_type: patent\n- source_review_status: approved\n- summary_confidence: 0.60\n- human_review_notes: 검토 승인 완료\n\n### 신입 설명\n\n- purpose: 신입 관점 설명\n- audience_focus: 핵심 개념, 후속 확인 포인트\n- explanation_text: [SAMPLE] Stacked CIS readout timing architecture에 대한 신입 설명 본문\n- key_points: [SAMPLE] Stacked CIS readout timing architecture, 신입 핵심\n- cautions: fixture caution\n- action_prompt: 후속 검토\n\n### 과장 설명\n\n- purpose: 과장 관점 설명\n- audience_focus: 핵심 개념, 후속 확인 포인트\n- explanation_text: [SAMPLE] Stacked CIS readout timing architecture에 대한 과장 설명 본문\n- key_points: [SAMPLE] Stacked CIS readout timing architecture, 과장 핵심\n- cautions: fixture caution\n- action_prompt: 후속 검토\n\n### 부장 설명\n\n- purpose: 부장 관점 설명\n- audience_focus: 핵심 개념, 후속 확인 포인트\n- explanation_text: [SAMPLE] Stacked CIS readout timing architecture에 대한 부장 설명 본문\n- key_points: [SAMPLE] Stacked CIS readout timing architecture, 부장 핵심\n- cautions: fixture caution\n- action_prompt: 후속 검토\n\n## [SAMPLE] Pixel isolation structure for CMOS image sensor\n\n- document_id: patent:number:sample-us-match-001-a1\n- document_type: patent\n- source_review_status: approved\n- summary_confidence: 0.55\n- human_review_notes: -\n\n### 신입 설명\n\n- purpose: 신입 관점 설명\n- audience_focus: 핵심 개념, 후속 확인 포인트\n- explanation_text: [SAMPLE] Pixel isolation structure for CMOS image sensor에 대한 신입 설명 본문\n- key_points: [SAMPLE] Pixel isolation structure for CMOS image sensor, 신입 핵심\n- cautions: fixture caution\n- action_prompt: 후속 검토\n\n### 과장 설명\n\n- purpose: 과장 관점 설명\n- audience_focus: 핵심 개념, 후속 확인 포인트\n- explanation_text: [SAMPLE] Pixel isolation structure for CMOS image sensor에 대한 과장 설명 본문\n- key_points: [SAMPLE] Pixel isolation structure for CMOS image sensor, 과장 핵심\n- cautions: fixture caution\n- action_prompt: 후속 검토\n\n### 부장 설명\n\n- purpose: 부장 관점 설명\n- audience_focus: 핵심 개념, 후속 확인 포인트\n- explanation_text: [SAMPLE] Pixel isolation structure for CMOS image sensor에 대한 부장 설명 본문\n- key_points: [SAMPLE] Pixel isolation structure for CMOS image sensor, 부장 핵심\n- cautions: fixture caution\n- action_prompt: 후속 검토\n"
+    }
+  },
+  "docx": {
+    "artifact": {
+      "bundles": [
+        {
+          "approval_status": "draft",
+          "bundle_id": "phase4-render-fixture:docx-brief",
+          "included_document_ids": [
+            "patent:number:sample-us-partial-001-a1",
+            "patent:number:sample-us-match-001-a1"
+          ],
+          "output_path": "__DYNAMIC_OUTPUT_PATH__",
+          "output_type": "docx",
+          "run_id": "phase4-render-fixture",
+          "schema_version": "0.1.0",
+          "template_version": "phase4-docx-v1"
+        }
+      ],
+      "run": {
+        "config_version": "phase4-default",
+        "domain": "cmos_image_sensor",
+        "ended_at": null,
+        "operator": "tester",
+        "run_id": "phase4-render-fixture",
+        "schema_version": "0.1.0",
+        "stage_status": {
+          "render": {
+            "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+            "message": "docx brief 2건 문헌으로 생성 완료",
+            "status": "completed",
+            "updated_at": "__DYNAMIC_UPDATED_AT__"
+          }
+        },
+        "started_at": "2026-04-08T09:00:00Z",
+        "week_start": "2026-04-06"
+      },
+      "schema_version": "0.1.0"
+    },
+    "output": {
+      "archive_entries": [
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "docProps/app.xml",
+        "docProps/core.xml",
+        "word/_rels/document.xml.rels",
+        "word/document.xml",
+        "word/styles.xml"
+      ],
+      "entry_sha256": {
+        "[Content_Types].xml": "908fb1800968fc4d6f94c6370e90854ad5957473ddbfd6eed5a2ffb0390adaf4",
+        "_rels/.rels": "f86f1893aecb510b25f41025ced61dd4a921d4188a6056e2f3fb17af8545e8e6",
+        "docProps/app.xml": "172a7bbe3c9129d90ed7255507e94f6c25eb37a4efe5a7416c2a1bd9820b9a16",
+        "docProps/core.xml": "824a30d516eca5e491c5241ff95f34ba4929841b7d8fcc9717cd0c00340988d4",
+        "word/_rels/document.xml.rels": "0abbb6602d02239045317cf9184c234eaa90a4c0418c7b04bc3bd52e9d1a335d",
+        "word/document.xml": "7d2bb1127e9682545f13128833f0b4f087142ae9e06b74316430d028f63c1b16",
+        "word/styles.xml": "d6450e6e115d6dc8d7627d44c71f62d3b8163c4ba1ff31fb30cab041047f917a"
+      },
+      "document_xml_sha256": "7d2bb1127e9682545f13128833f0b4f087142ae9e06b74316430d028f63c1b16",
+      "has_title": true,
+      "has_primary_document": true,
+      "has_secondary_document": true
+    }
+  },
+  "pdf": {
+    "artifact": {
+      "bundles": [
+        {
+          "approval_status": "draft",
+          "bundle_id": "phase4-render-fixture:pdf-brief",
+          "included_document_ids": [
+            "patent:number:sample-us-partial-001-a1",
+            "patent:number:sample-us-match-001-a1"
+          ],
+          "output_path": "__DYNAMIC_OUTPUT_PATH__",
+          "output_type": "pdf",
+          "run_id": "phase4-render-fixture",
+          "schema_version": "0.1.0",
+          "template_version": "phase4-pdf-v1"
+        }
+      ],
+      "run": {
+        "config_version": "phase4-default",
+        "domain": "cmos_image_sensor",
+        "ended_at": null,
+        "operator": "tester",
+        "run_id": "phase4-render-fixture",
+        "schema_version": "0.1.0",
+        "stage_status": {
+          "render": {
+            "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+            "message": "pdf brief 2건 문헌으로 생성 완료",
+            "status": "completed",
+            "updated_at": "__DYNAMIC_UPDATED_AT__"
+          }
+        },
+        "started_at": "2026-04-08T09:00:00Z",
+        "week_start": "2026-04-06"
+      },
+      "schema_version": "0.1.0"
+    },
+    "output": {
+      "sha256": "83b3b2f04e36a1ebee96fcd6cad5bbffb44e248ce431d5d65d19f71a7f1cb126",
+      "size": 11297,
+      "has_pdf_header": true,
+      "has_eof": true,
+      "has_font_marker": true,
+      "has_page_marker": true
+    }
+  },
+  "pptx": {
+    "artifact": {
+      "bundles": [
+        {
+          "approval_status": "draft",
+          "bundle_id": "phase4-render-fixture:pptx-brief",
+          "included_document_ids": [
+            "patent:number:sample-us-partial-001-a1",
+            "patent:number:sample-us-match-001-a1"
+          ],
+          "output_path": "__DYNAMIC_OUTPUT_PATH__",
+          "output_type": "pptx",
+          "run_id": "phase4-render-fixture",
+          "schema_version": "0.1.0",
+          "template_version": "phase4-pptx-v1"
+        }
+      ],
+      "run": {
+        "config_version": "phase4-default",
+        "domain": "cmos_image_sensor",
+        "ended_at": null,
+        "operator": "tester",
+        "run_id": "phase4-render-fixture",
+        "schema_version": "0.1.0",
+        "stage_status": {
+          "render": {
+            "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+            "message": "pptx brief 2건 문헌으로 생성 완료",
+            "status": "completed",
+            "updated_at": "__DYNAMIC_UPDATED_AT__"
+          }
+        },
+        "started_at": "2026-04-08T09:00:00Z",
+        "week_start": "2026-04-06"
+      },
+      "schema_version": "0.1.0"
+    },
+    "output": {
+      "archive_entries": [
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "docProps/app.xml",
+        "docProps/core.xml",
+        "ppt/_rels/presentation.xml.rels",
+        "ppt/presentation.xml",
+        "ppt/slideLayouts/_rels/slideLayout1.xml.rels",
+        "ppt/slideLayouts/slideLayout1.xml",
+        "ppt/slideMasters/_rels/slideMaster1.xml.rels",
+        "ppt/slideMasters/slideMaster1.xml",
+        "ppt/slides/_rels/slide1.xml.rels",
+        "ppt/slides/_rels/slide2.xml.rels",
+        "ppt/slides/slide1.xml",
+        "ppt/slides/slide2.xml",
+        "ppt/theme/theme1.xml"
+      ],
+      "entry_sha256": {
+        "[Content_Types].xml": "d7705631a05537368c18a274160cc2cd55e1669aa9b6b87c22007a1ca05d93da",
+        "_rels/.rels": "7eb599f884f60aefc229cd1c24817fd89d1c9c9d600468bf89ca6174b2223bd5",
+        "docProps/app.xml": "172a7bbe3c9129d90ed7255507e94f6c25eb37a4efe5a7416c2a1bd9820b9a16",
+        "docProps/core.xml": "75d2c04e264fb2f76ba6f5d4af702091c684df364d2ee4fe261a14aafab394e6",
+        "ppt/_rels/presentation.xml.rels": "43d5bef0090fc93a0ecd9170540548d6b7a7a521e87239a2e0e717cf35032043",
+        "ppt/presentation.xml": "cbd62d2b4b90cb051d390313777c16339e6f05c0a6b66d22ed9cd7581a5abcdb",
+        "ppt/slideLayouts/_rels/slideLayout1.xml.rels": "6073e7249e9e8180690c17a972a30921cea5e9a5c44c1041bb93b3b752fb29e1",
+        "ppt/slideLayouts/slideLayout1.xml": "9720f399013489b2b52c062dd57fdd0612cbbcfbf154096460a1e85d260b4c87",
+        "ppt/slideMasters/_rels/slideMaster1.xml.rels": "348d61451aaa7dd681738c83760c70d56ffb0551bcd984e75a4f6e41e2cf81be",
+        "ppt/slideMasters/slideMaster1.xml": "bf915c29aeeff8597d1539f3dd58d0904f375feaebc63efe002eb613d0ee165f",
+        "ppt/slides/_rels/slide1.xml.rels": "ede4d6f6cacd6968c45b3626e206cd8b3695ddedf399daaa0f7cf169a6ba66da",
+        "ppt/slides/_rels/slide2.xml.rels": "ede4d6f6cacd6968c45b3626e206cd8b3695ddedf399daaa0f7cf169a6ba66da",
+        "ppt/slides/slide1.xml": "f1bc3b42e773f35dd9519cf76d701d90c3e345c324275170657d957819483ba3",
+        "ppt/slides/slide2.xml": "6e361bd6941771e31e5903507e1fba6477bbfa2042bc32df0fa42d0d6b9997de",
+        "ppt/theme/theme1.xml": "b24621edacb590a33171b65177b563a0092a0ce20c96df01aeaa425d0f5595bd"
+      },
+      "presentation_xml_sha256": "cbd62d2b4b90cb051d390313777c16339e6f05c0a6b66d22ed9cd7581a5abcdb",
+      "slide_xml_sha256": {
+        "ppt/slides/slide1.xml": "f1bc3b42e773f35dd9519cf76d701d90c3e345c324275170657d957819483ba3",
+        "ppt/slides/slide2.xml": "6e361bd6941771e31e5903507e1fba6477bbfa2042bc32df0fa42d0d6b9997de"
+      },
+      "slide_count": 2,
+      "has_title": true,
+      "has_primary_document": true,
+      "has_secondary_document": true
+    }
+  }
+}

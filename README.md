@@ -2,7 +2,7 @@
 
 CIS 분야 최신 논문 및 특허를 주간 단위로 수집하고, 구조화 요약과 검수 가능한 기술 브리프를 만들기 위한 내부 도구다.
 
-현재 구현 범위는 `Phase 4`이며 다음을 포함한다.
+현재 구현 범위는 `Phase 4.3`이며 다음을 포함한다.
 
 - 핵심 canonical schema 패키지
 - 로컬 fixture 기반 `ingest` / `normalize` 파이프라인
@@ -12,7 +12,7 @@ CIS 분야 최신 논문 및 특허를 주간 단위로 수집하고, 구조화 
 - 사람이 수정한 review CSV를 다시 JSON artifact로 반영하는 `review import` CLI
 - `approved` 검토 결과만 읽어 placeholder `summary_artifact.json`을 생성하는 `summarize` 파이프라인
 - `summary_artifact.json`에서 직급별 설명을 분리한 `explain_artifact.json`을 생성하는 `explain` 파이프라인
-- `explain_artifact.json`에서 Markdown brief와 `render_artifact.json`을 생성하는 `render` 파이프라인
+- `explain_artifact.json`에서 Markdown, DOCX, PDF 또는 PPTX brief와 `render_artifact.json`을 생성하는 `render` 파이프라인
 - JSON schema export CLI
 - 샘플 입력/출력 데이터
 - 기본 단위/통합 테스트
@@ -32,7 +32,7 @@ CIS 분야 최신 논문 및 특허를 주간 단위로 수집하고, 구조화 
 7. `review`
 8. `render`
 
-Phase 4 현재 범위에서는 `assess-relevance`, `verify`, `review import/export`, `summarize`, `explain`, `render`를 구현했으며, DOCX/PPTX/PDF 렌더링은 아직 포함하지 않는다.
+Phase 4.3 현재 범위에서는 `assess-relevance`, `verify`, `review import/export`, `summarize`, `explain`, `render`를 구현했으며, 현재 `render`는 Markdown, DOCX, PDF, PPTX를 지원한다.
 
 ## WSL 로컬 검증
 
@@ -173,6 +173,45 @@ Markdown brief를 생성하려면 아래처럼 실행한다.
 - `artifacts/runs/<run_id>/render/brief.md`
 - `artifacts/runs/<run_id>/render/render_artifact.json`
 
+DOCX로 생성하려면 아래처럼 실행한다.
+
+```bash
+./.venv/bin/python -m pnp_digest.cli render \
+  --run-id phase2-patent-verify \
+  --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json \
+  --output-type docx
+```
+
+이 경우 기본 출력 파일은 아래 경로다.
+
+- `artifacts/runs/<run_id>/render/brief.docx`
+
+PDF로 생성하려면 아래처럼 실행한다.
+
+```bash
+./.venv/bin/python -m pnp_digest.cli render \
+  --run-id phase2-patent-verify \
+  --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json \
+  --output-type pdf
+```
+
+이 경우 기본 출력 파일은 아래 경로다.
+
+- `artifacts/runs/<run_id>/render/brief.pdf`
+
+PPTX로 생성하려면 아래처럼 실행한다.
+
+```bash
+./.venv/bin/python -m pnp_digest.cli render \
+  --run-id phase2-patent-verify \
+  --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json \
+  --output-type pptx
+```
+
+이 경우 기본 출력 파일은 아래 경로다.
+
+- `artifacts/runs/<run_id>/render/brief.pptx`
+
 간단한 결과 확인 예시는 아래와 같다.
 
 ```bash
@@ -223,6 +262,20 @@ Phase 2.3에서는 사람이 수정한 CSV를 다시 `verification_review_resolu
 Phase 3 첫 구현에서는 `approved` 상태 문헌만 `summary_artifact.json`으로 넘겨 summarize 단계 입력 계약을 고정한다.
 Phase 3.1에서는 `summary_artifact.json` 안의 직급별 설명 블록을 `explain_artifact.json`으로 분리해 explain 단계 계약을 고정한다.
 Phase 4에서는 `explain_artifact.json`을 Markdown brief로 렌더링하고, 출력 메타데이터를 `render_artifact.json`으로 저장한다.
+Phase 4.1에서는 같은 입력으로 DOCX brief도 생성할 수 있게 해 output bundle을 확장한다.
+Phase 4.2에서는 같은 입력으로 PDF brief도 생성할 수 있게 해 render output 선택 폭을 넓힌다.
+Phase 4.3에서는 같은 입력으로 PPTX brief도 생성할 수 있게 해 발표 자료 초안을 파일 기반으로 검토할 수 있게 한다.
+
+Phase 4.3 snapshot 테스트에서는 `render_artifact.json`과 각 출력 형식의 핵심 구조를 고정 fixture와 비교해 render 포맷 회귀를 감지한다.
+
+- `tests/integration/test_phase4_render.py`: Markdown/DOCX/PDF/PPTX 산출물 생성 + snapshot 회귀 검증
+- `tests/fixtures/phase4_render_snapshots.json`: render artifact 및 출력물 요약 snapshot
+
+빠른 실행 명령:
+
+```bash
+./.venv/bin/python -m pytest -q tests/integration/test_phase4_render.py
+```
 
 ## 예시 명령
 
@@ -237,6 +290,9 @@ pnp-digest review import --verification-review-manifest artifacts/runs/phase2-pa
 pnp-digest summarize --run-id phase2-patent-verify --normalized-artifact data/sample_inputs/phase2_patent_verify_normalized_fixture.json --verification-review-resolution artifacts/runs/phase2-patent-verify/review/verification_review_resolution.json
 pnp-digest explain --run-id phase2-patent-verify --summary-artifact artifacts/runs/phase2-patent-verify/summarize/summary_artifact.json
 pnp-digest render --run-id phase2-patent-verify --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json
+pnp-digest render --run-id phase2-patent-verify --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json --output-type docx
+pnp-digest render --run-id phase2-patent-verify --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json --output-type pdf
+pnp-digest render --run-id phase2-patent-verify --explain-artifact artifacts/runs/phase2-patent-verify/explain/explain_artifact.json --output-type pptx
 ```
 
 `assess-relevance` 실행 시 아래 파일이 저장된다.
@@ -249,8 +305,11 @@ pnp-digest render --run-id phase2-patent-verify --explain-artifact artifacts/run
 - `artifacts/runs/<run_id>/review/verification_review_resolution.json` (`review import` 실행 시 생성)
 - `artifacts/runs/<run_id>/summarize/summary_artifact.json` (`approved` 검토 결과만 포함)
 - `artifacts/runs/<run_id>/explain/explain_artifact.json` (`summary_artifact`의 직급별 설명 블록을 분리한 결과)
-- `artifacts/runs/<run_id>/render/brief.md` (`render` 실행 시 생성되는 Markdown brief)
-- `artifacts/runs/<run_id>/render/render_artifact.json` (`Markdown brief output metadata`)
+- `artifacts/runs/<run_id>/render/brief.md` (`render` 기본 실행 시 생성되는 Markdown brief)
+- `artifacts/runs/<run_id>/render/brief.docx` (`render --output-type docx` 실행 시 생성)
+- `artifacts/runs/<run_id>/render/brief.pdf` (`render --output-type pdf` 실행 시 생성)
+- `artifacts/runs/<run_id>/render/brief.pptx` (`render --output-type pptx` 실행 시 생성)
+- `artifacts/runs/<run_id>/render/render_artifact.json` (`render output metadata`)
 
 규칙 사전 초안은 `data/dictionaries/` 아래 파일을 사용한다.
 
@@ -263,6 +322,6 @@ pnp-digest render --run-id phase2-patent-verify --explain-artifact artifacts/run
 - 외부 API 연동은 아직 없다.
 - 특허 검증은 아직 mock/manual provider 기반이며 실제 온라인 조회를 하지 않는다.
 - LLM 기반 relevance/요약 생성은 아직 없다.
-- 현재 `render`는 Markdown brief만 생성하며 DOCX/PPTX/PDF 렌더링은 아직 없다.
+- 외부 프레젠테이션 템플릿 연동은 아직 없다.
 
 상세 구조는 [docs/architecture.md](/home/kyongtae/projects/PnP_digest/docs/architecture.md)에서 설명한다.
