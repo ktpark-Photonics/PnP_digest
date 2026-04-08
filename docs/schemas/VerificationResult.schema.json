@@ -1,0 +1,129 @@
+{
+  "$defs": {
+    "VerificationStatus": {
+      "description": "필드 단위 검증 상태.",
+      "enum": [
+        "matched",
+        "partially_matched",
+        "mismatched",
+        "missing",
+        "not_checked",
+        "manual_review_required"
+      ],
+      "title": "VerificationStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "필드 단위 검증 결과.",
+  "properties": {
+    "checked_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "검증 시각",
+      "title": "Checked At"
+    },
+    "confidence": {
+      "description": "검증 신뢰도",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "evidence_source": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "근거 출처",
+      "title": "Evidence Source"
+    },
+    "evidence_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "근거 텍스트",
+      "title": "Evidence Text"
+    },
+    "expected_value": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "내부 기록값",
+      "title": "Expected Value"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "검토 메모",
+      "title": "Notes"
+    },
+    "observed_value": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "외부 근거값",
+      "title": "Observed Value"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/VerificationStatus",
+      "description": "검증 상태"
+    },
+    "verification_field": {
+      "description": "검증 대상 필드",
+      "title": "Verification Field",
+      "type": "string"
+    }
+  },
+  "required": [
+    "verification_field",
+    "status",
+    "confidence"
+  ],
+  "title": "VerificationResult",
+  "type": "object"
+}

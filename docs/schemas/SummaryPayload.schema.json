@@ -1,0 +1,206 @@
+{
+  "$defs": {
+    "AudienceExplanation": {
+      "additionalProperties": false,
+      "description": "직급별 설명 정책을 구조화한 블록.",
+      "properties": {
+        "action_prompt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "후속 검토 또는 액션 제안",
+          "title": "Action Prompt"
+        },
+        "audience_focus": {
+          "description": "강조할 관점",
+          "items": {
+            "type": "string"
+          },
+          "title": "Audience Focus",
+          "type": "array"
+        },
+        "cautions": {
+          "description": "오해 방지 또는 제한 사항",
+          "items": {
+            "type": "string"
+          },
+          "title": "Cautions",
+          "type": "array"
+        },
+        "explanation_text": {
+          "description": "설명 본문",
+          "title": "Explanation Text",
+          "type": "string"
+        },
+        "key_points": {
+          "description": "핵심 포인트",
+          "items": {
+            "type": "string"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "purpose": {
+          "description": "이 설명이 필요한 목적",
+          "title": "Purpose",
+          "type": "string"
+        }
+      },
+      "required": [
+        "purpose",
+        "explanation_text"
+      ],
+      "title": "AudienceExplanation",
+      "type": "object"
+    },
+    "EvidenceSnippet": {
+      "additionalProperties": false,
+      "description": "판정 또는 요약 근거로 사용된 snippet.",
+      "properties": {
+        "locator": {
+          "description": "근거 위치 정보",
+          "title": "Locator",
+          "type": "string"
+        },
+        "snippet_text": {
+          "description": "근거 본문",
+          "title": "Snippet Text",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "근거의 원문 URL",
+          "title": "Source Url"
+        },
+        "supports_fields": {
+          "description": "이 snippet이 뒷받침하는 필드 이름 목록",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Supports Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "locator",
+        "snippet_text",
+        "supports_fields"
+      ],
+      "title": "EvidenceSnippet",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "description": "근거 연결형 구조화 요약.",
+  "properties": {
+    "background_context": {
+      "description": "문헌이 등장한 배경",
+      "title": "Background Context",
+      "type": "string"
+    },
+    "core_idea": {
+      "description": "핵심 아이디어",
+      "title": "Core Idea",
+      "type": "string"
+    },
+    "director_level_explanation": {
+      "$ref": "#/$defs/AudienceExplanation",
+      "description": "부장급 설명"
+    },
+    "entry_level_explanation": {
+      "$ref": "#/$defs/AudienceExplanation",
+      "description": "신입사원용 설명"
+    },
+    "evidence_links_or_snippets": {
+      "description": "요약 필드와 연결된 근거",
+      "items": {
+        "$ref": "#/$defs/EvidenceSnippet"
+      },
+      "minItems": 1,
+      "title": "Evidence Links Or Snippets",
+      "type": "array"
+    },
+    "expected_effect": {
+      "description": "예상 효과",
+      "title": "Expected Effect",
+      "type": "string"
+    },
+    "human_review_notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "사람 검수 메모",
+      "title": "Human Review Notes"
+    },
+    "limitations_or_unknowns": {
+      "description": "한계 또는 미확인 사항",
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations Or Unknowns",
+      "type": "array"
+    },
+    "manager_level_explanation": {
+      "$ref": "#/$defs/AudienceExplanation",
+      "description": "과장급 설명"
+    },
+    "problem_statement": {
+      "description": "기존 기술의 한계 또는 문제 정의",
+      "title": "Problem Statement",
+      "type": "string"
+    },
+    "purpose": {
+      "description": "연구 또는 발명의 목적",
+      "title": "Purpose",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "summary_confidence": {
+      "description": "요약 신뢰도",
+      "maximum": 1.0,
+      "minimum": 0.0,
+      "title": "Summary Confidence",
+      "type": "number"
+    }
+  },
+  "required": [
+    "background_context",
+    "problem_statement",
+    "purpose",
+    "core_idea",
+    "expected_effect",
+    "evidence_links_or_snippets",
+    "entry_level_explanation",
+    "manager_level_explanation",
+    "director_level_explanation",
+    "summary_confidence"
+  ],
+  "title": "SummaryPayload",
+  "type": "object"
+}

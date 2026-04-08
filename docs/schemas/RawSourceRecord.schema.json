@@ -1,0 +1,95 @@
+{
+  "$defs": {
+    "DocumentType": {
+      "description": "문헌의 상위 유형.",
+      "enum": [
+        "paper",
+        "patent"
+      ],
+      "title": "DocumentType",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "수집 단계에서 원문 payload를 추적하는 레코드.",
+  "properties": {
+    "checksum": {
+      "description": "payload checksum",
+      "title": "Checksum",
+      "type": "string"
+    },
+    "document_type": {
+      "$ref": "#/$defs/DocumentType",
+      "description": "원문이 가리키는 문헌 유형"
+    },
+    "fetched_at": {
+      "description": "수집 시각",
+      "format": "date-time",
+      "title": "Fetched At",
+      "type": "string"
+    },
+    "query": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "수집 시 사용한 검색어",
+      "title": "Query"
+    },
+    "raw_id": {
+      "description": "원시 레코드 식별자",
+      "title": "Raw Id",
+      "type": "string"
+    },
+    "raw_payload_path": {
+      "description": "저장된 payload 파일 경로",
+      "title": "Raw Payload Path",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_name": {
+      "description": "원문 소스 이름",
+      "title": "Source Name",
+      "type": "string"
+    },
+    "source_type": {
+      "description": "source adapter가 사용하는 원문 분류",
+      "title": "Source Type",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "원문 항목 URL",
+      "title": "Source Url"
+    }
+  },
+  "required": [
+    "raw_id",
+    "document_type",
+    "source_type",
+    "source_name",
+    "fetched_at",
+    "raw_payload_path",
+    "checksum"
+  ],
+  "title": "RawSourceRecord",
+  "type": "object"
+}

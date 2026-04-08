@@ -93,6 +93,7 @@ class ReviewTaskStatus(StrEnum):
 class OutputType(StrEnum):
     """최종 산출물 형식."""
 
+    MARKDOWN = "markdown"
     DOCX = "docx"
     PPTX = "pptx"
     PDF = "pdf"

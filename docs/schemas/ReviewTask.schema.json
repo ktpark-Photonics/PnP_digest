@@ -1,0 +1,158 @@
+{
+  "$defs": {
+    "ReviewChecklistItem": {
+      "additionalProperties": false,
+      "description": "검수 체크리스트 항목.",
+      "properties": {
+        "item_id": {
+          "description": "체크 항목 식별자",
+          "title": "Item Id",
+          "type": "string"
+        },
+        "prompt": {
+          "description": "검토 질문",
+          "title": "Prompt",
+          "type": "string"
+        },
+        "required": {
+          "default": true,
+          "description": "필수 여부",
+          "title": "Required",
+          "type": "boolean"
+        },
+        "response": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "검토 결과 또는 메모",
+          "title": "Response"
+        }
+      },
+      "required": [
+        "item_id",
+        "prompt"
+      ],
+      "title": "ReviewChecklistItem",
+      "type": "object"
+    },
+    "ReviewStage": {
+      "description": "사람 검수가 개입하는 단계.",
+      "enum": [
+        "relevance",
+        "verification",
+        "summary",
+        "figure",
+        "final_release"
+      ],
+      "title": "ReviewStage",
+      "type": "string"
+    },
+    "ReviewTaskStatus": {
+      "description": "검수 작업 상태.",
+      "enum": [
+        "open",
+        "in_review",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewTaskStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "사람 검수 워크플로 엔터티.",
+  "properties": {
+    "assignee": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "담당자",
+      "title": "Assignee"
+    },
+    "checklist": {
+      "description": "검수 체크리스트",
+      "items": {
+        "$ref": "#/$defs/ReviewChecklistItem"
+      },
+      "title": "Checklist",
+      "type": "array"
+    },
+    "notes": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "검토 메모",
+      "title": "Notes"
+    },
+    "review_stage": {
+      "$ref": "#/$defs/ReviewStage",
+      "description": "검수 단계"
+    },
+    "review_task_id": {
+      "description": "검수 작업 식별자",
+      "title": "Review Task Id",
+      "type": "string"
+    },
+    "reviewed_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "검토 완료 시각",
+      "title": "Reviewed At"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "status": {
+      "$ref": "#/$defs/ReviewTaskStatus",
+      "description": "검수 상태"
+    },
+    "target_id": {
+      "description": "검토 대상 식별자",
+      "title": "Target Id",
+      "type": "string"
+    },
+    "target_type": {
+      "description": "검토 대상 유형",
+      "title": "Target Type",
+      "type": "string"
+    }
+  },
+  "required": [
+    "review_task_id",
+    "target_type",
+    "target_id",
+    "review_stage",
+    "status"
+  ],
+  "title": "ReviewTask",
+  "type": "object"
+}

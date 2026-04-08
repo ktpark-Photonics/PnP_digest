@@ -1,0 +1,339 @@
+{
+  "$defs": {
+    "AudienceExplanation": {
+      "additionalProperties": false,
+      "description": "직급별 설명 정책을 구조화한 블록.",
+      "properties": {
+        "action_prompt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "후속 검토 또는 액션 제안",
+          "title": "Action Prompt"
+        },
+        "audience_focus": {
+          "description": "강조할 관점",
+          "items": {
+            "type": "string"
+          },
+          "title": "Audience Focus",
+          "type": "array"
+        },
+        "cautions": {
+          "description": "오해 방지 또는 제한 사항",
+          "items": {
+            "type": "string"
+          },
+          "title": "Cautions",
+          "type": "array"
+        },
+        "explanation_text": {
+          "description": "설명 본문",
+          "title": "Explanation Text",
+          "type": "string"
+        },
+        "key_points": {
+          "description": "핵심 포인트",
+          "items": {
+            "type": "string"
+          },
+          "title": "Key Points",
+          "type": "array"
+        },
+        "purpose": {
+          "description": "이 설명이 필요한 목적",
+          "title": "Purpose",
+          "type": "string"
+        }
+      },
+      "required": [
+        "purpose",
+        "explanation_text"
+      ],
+      "title": "AudienceExplanation",
+      "type": "object"
+    },
+    "DocumentType": {
+      "description": "문헌의 상위 유형.",
+      "enum": [
+        "paper",
+        "patent"
+      ],
+      "title": "DocumentType",
+      "type": "string"
+    },
+    "ExplainRecord": {
+      "additionalProperties": false,
+      "description": "단일 문헌에 대한 직급별 설명 결과.",
+      "properties": {
+        "director_level_explanation": {
+          "$ref": "#/$defs/AudienceExplanation",
+          "description": "부장급 설명"
+        },
+        "document_id": {
+          "description": "설명 대상 문헌 ID",
+          "title": "Document Id",
+          "type": "string"
+        },
+        "document_title": {
+          "description": "문헌 제목",
+          "title": "Document Title",
+          "type": "string"
+        },
+        "document_type": {
+          "$ref": "#/$defs/DocumentType",
+          "description": "문헌 유형"
+        },
+        "entry_level_explanation": {
+          "$ref": "#/$defs/AudienceExplanation",
+          "description": "신입사원용 설명"
+        },
+        "human_review_notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "사람 검토 메모",
+          "title": "Human Review Notes"
+        },
+        "manager_level_explanation": {
+          "$ref": "#/$defs/AudienceExplanation",
+          "description": "과장급 설명"
+        },
+        "source_review_status": {
+          "$ref": "#/$defs/ReviewStatus",
+          "description": "설명에 반영된 수동 검토 상태"
+        },
+        "summary_confidence": {
+          "description": "원본 요약 신뢰도",
+          "maximum": 1.0,
+          "minimum": 0.0,
+          "title": "Summary Confidence",
+          "type": "number"
+        }
+      },
+      "required": [
+        "document_id",
+        "document_type",
+        "document_title",
+        "source_review_status",
+        "summary_confidence",
+        "entry_level_explanation",
+        "manager_level_explanation",
+        "director_level_explanation"
+      ],
+      "title": "ExplainRecord",
+      "type": "object"
+    },
+    "PipelineRun": {
+      "additionalProperties": false,
+      "description": "주간 배치 실행 단위를 표현하는 모델.",
+      "properties": {
+        "config_version": {
+          "description": "사용된 설정 버전",
+          "title": "Config Version",
+          "type": "string"
+        },
+        "domain": {
+          "description": "대상 기술 분야",
+          "title": "Domain",
+          "type": "string"
+        },
+        "ended_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "실행 종료 시각",
+          "title": "Ended At"
+        },
+        "operator": {
+          "description": "실행한 운영자 또는 배치 주체",
+          "title": "Operator",
+          "type": "string"
+        },
+        "run_id": {
+          "description": "주간 실행 식별자",
+          "title": "Run Id",
+          "type": "string"
+        },
+        "schema_version": {
+          "default": "0.1.0",
+          "description": "적용된 canonical schema 버전",
+          "title": "Schema Version",
+          "type": "string"
+        },
+        "stage_status": {
+          "additionalProperties": {
+            "$ref": "#/$defs/StageExecutionState"
+          },
+          "description": "stage별 진행 상태",
+          "propertyNames": {
+            "$ref": "#/$defs/StageName"
+          },
+          "title": "Stage Status",
+          "type": "object"
+        },
+        "started_at": {
+          "description": "실행 시작 시각",
+          "format": "date-time",
+          "title": "Started At",
+          "type": "string"
+        },
+        "week_start": {
+          "description": "주간 브리프 기준 시작일",
+          "format": "date",
+          "title": "Week Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "run_id",
+        "domain",
+        "week_start",
+        "started_at",
+        "operator",
+        "config_version"
+      ],
+      "title": "PipelineRun",
+      "type": "object"
+    },
+    "ReviewStatus": {
+      "description": "문헌 또는 자산의 검수 상태.",
+      "enum": [
+        "pending",
+        "manual_review_required",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    },
+    "StageExecutionState": {
+      "additionalProperties": false,
+      "description": "개별 stage 실행 상태.",
+      "properties": {
+        "artifact_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "해당 stage 산출물의 대표 경로",
+          "title": "Artifact Path"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "상태 설명 또는 실패 메모",
+          "title": "Message"
+        },
+        "status": {
+          "$ref": "#/$defs/StageExecutionStatus",
+          "description": "현재 stage의 실행 상태"
+        },
+        "updated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "상태가 마지막으로 갱신된 시각",
+          "title": "Updated At"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "StageExecutionState",
+      "type": "object"
+    },
+    "StageExecutionStatus": {
+      "description": "stage 실행 상태.",
+      "enum": [
+        "pending",
+        "running",
+        "completed",
+        "failed",
+        "skipped"
+      ],
+      "title": "StageExecutionStatus",
+      "type": "string"
+    },
+    "StageName": {
+      "description": "파이프라인 stage 이름.",
+      "enum": [
+        "ingest",
+        "normalize",
+        "assess_relevance",
+        "verify",
+        "summarize",
+        "explain",
+        "review",
+        "render"
+      ],
+      "title": "StageName",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "explain 단계 산출물.",
+  "properties": {
+    "explanations": {
+      "description": "문헌별 직급 설명 목록",
+      "items": {
+        "$ref": "#/$defs/ExplainRecord"
+      },
+      "title": "Explanations",
+      "type": "array"
+    },
+    "run": {
+      "$ref": "#/$defs/PipelineRun",
+      "description": "연결된 실행 정보"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run"
+  ],
+  "title": "ExplainArtifact",
+  "type": "object"
+}

@@ -1,0 +1,163 @@
+{
+  "$defs": {
+    "StageExecutionState": {
+      "additionalProperties": false,
+      "description": "개별 stage 실행 상태.",
+      "properties": {
+        "artifact_path": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "해당 stage 산출물의 대표 경로",
+          "title": "Artifact Path"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "상태 설명 또는 실패 메모",
+          "title": "Message"
+        },
+        "status": {
+          "$ref": "#/$defs/StageExecutionStatus",
+          "description": "현재 stage의 실행 상태"
+        },
+        "updated_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "상태가 마지막으로 갱신된 시각",
+          "title": "Updated At"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "StageExecutionState",
+      "type": "object"
+    },
+    "StageExecutionStatus": {
+      "description": "stage 실행 상태.",
+      "enum": [
+        "pending",
+        "running",
+        "completed",
+        "failed",
+        "skipped"
+      ],
+      "title": "StageExecutionStatus",
+      "type": "string"
+    },
+    "StageName": {
+      "description": "파이프라인 stage 이름.",
+      "enum": [
+        "ingest",
+        "normalize",
+        "assess_relevance",
+        "verify",
+        "summarize",
+        "explain",
+        "review",
+        "render"
+      ],
+      "title": "StageName",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "주간 배치 실행 단위를 표현하는 모델.",
+  "properties": {
+    "config_version": {
+      "description": "사용된 설정 버전",
+      "title": "Config Version",
+      "type": "string"
+    },
+    "domain": {
+      "description": "대상 기술 분야",
+      "title": "Domain",
+      "type": "string"
+    },
+    "ended_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "실행 종료 시각",
+      "title": "Ended At"
+    },
+    "operator": {
+      "description": "실행한 운영자 또는 배치 주체",
+      "title": "Operator",
+      "type": "string"
+    },
+    "run_id": {
+      "description": "주간 실행 식별자",
+      "title": "Run Id",
+      "type": "string"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "stage_status": {
+      "additionalProperties": {
+        "$ref": "#/$defs/StageExecutionState"
+      },
+      "description": "stage별 진행 상태",
+      "propertyNames": {
+        "$ref": "#/$defs/StageName"
+      },
+      "title": "Stage Status",
+      "type": "object"
+    },
+    "started_at": {
+      "description": "실행 시작 시각",
+      "format": "date-time",
+      "title": "Started At",
+      "type": "string"
+    },
+    "week_start": {
+      "description": "주간 브리프 기준 시작일",
+      "format": "date",
+      "title": "Week Start",
+      "type": "string"
+    }
+  },
+  "required": [
+    "run_id",
+    "domain",
+    "week_start",
+    "started_at",
+    "operator",
+    "config_version"
+  ],
+  "title": "PipelineRun",
+  "type": "object"
+}

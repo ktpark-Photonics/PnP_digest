@@ -62,6 +62,36 @@
       "assessments"
     ]
   },
+  "SummaryArtifact": {
+    "required": [
+      "run"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "summaries"
+    ]
+  },
+  "ExplainArtifact": {
+    "required": [
+      "run"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "explanations"
+    ]
+  },
+  "RenderArtifact": {
+    "required": [
+      "run"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "bundles"
+    ]
+  },
   "ManualReviewManifest": {
     "required": [
       "run_id"
@@ -99,6 +129,34 @@
       "schema_version",
       "run",
       "reports"
+    ]
+  },
+  "VerificationReviewManifest": {
+    "required": [
+      "run_id"
+    ],
+    "properties": [
+      "schema_version",
+      "run_id",
+      "review_stage",
+      "items"
+    ]
+  },
+  "VerificationReviewResolutionArtifact": {
+    "required": [
+      "run_id",
+      "source_manifest_path",
+      "imported_csv_path",
+      "imported_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run_id",
+      "review_stage",
+      "source_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "items"
     ]
   }
 }

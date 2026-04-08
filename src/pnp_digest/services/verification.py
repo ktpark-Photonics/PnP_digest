@@ -14,6 +14,10 @@ from pnp_digest.domain.models import (
     DigestBaseModel,
     DocumentRecord,
     PatentMetadata,
+    VerificationArtifact,
+    VerificationReviewItem,
+    VerificationReviewManifest,
+    VerificationReport,
     VerificationResult,
 )
 from pnp_digest.services.io import read_json
@@ -29,6 +33,15 @@ PATENT_VERIFICATION_FIELDS = (
     "summary",
 )
 EXACT_MATCH_FIELDS = {"patent_number", "filing_date", "publication_date"}
+EXISTENCE_REVIEW_STATUSES = {
+    VerificationStatus.MISSING,
+    VerificationStatus.MANUAL_REVIEW_REQUIRED,
+}
+FIELD_REVIEW_STATUSES = {
+    VerificationStatus.MISMATCHED,
+    VerificationStatus.PARTIALLY_MATCHED,
+    VerificationStatus.MANUAL_REVIEW_REQUIRED,
+}
 
 
 class PatentVerificationOutcome(DigestBaseModel):
@@ -436,3 +449,102 @@ def load_patent_verification_provider(
     if normalized_name == "manual":
         return ManualPatentVerificationProvider(fixture_path)
     raise ValueError("provider는 mock 또는 manual 이어야 합니다.")
+
+
+def _report_needs_review_item(report: VerificationReport) -> bool:
+    """report가 수동 검토 manifest에 포함되어야 하는지 판단한다."""
+
+    if report.review_required:
+        return True
+    if report.existence_check.status in EXISTENCE_REVIEW_STATUSES:
+        return True
+    return any(result.status in FIELD_REVIEW_STATUSES for result in report.results)
+
+
+def _collect_flagged_fields(report: VerificationReport) -> list[str]:
+    """검토가 필요한 필드 이름 목록을 만든다."""
+
+    flagged_fields: list[str] = []
+    if report.existence_check.status in EXISTENCE_REVIEW_STATUSES:
+        flagged_fields.append(PATENT_EXISTENCE_FIELD)
+
+    flagged_fields.extend(
+        result.verification_field
+        for result in report.results
+        if result.status in FIELD_REVIEW_STATUSES and result.verification_field not in flagged_fields
+    )
+
+    if not flagged_fields and report.review_required:
+        flagged_fields.append(PATENT_EXISTENCE_FIELD)
+    return flagged_fields
+
+
+def _build_review_reason(report: VerificationReport, flagged_fields: list[str]) -> str:
+    """검토 필요 사유를 짧은 문자열로 요약한다."""
+
+    reason_parts: list[str] = []
+    if report.existence_check.status in EXISTENCE_REVIEW_STATUSES:
+        reason_parts.append(f"existence_status={report.existence_check.status}")
+
+    for status in (
+        VerificationStatus.MISMATCHED,
+        VerificationStatus.PARTIALLY_MATCHED,
+        VerificationStatus.MANUAL_REVIEW_REQUIRED,
+    ):
+        fields = [result.verification_field for result in report.results if result.status == status]
+        if fields:
+            reason_parts.append(f"{status}={','.join(fields)}")
+
+    if not reason_parts:
+        reason_parts.append(f"review_required={report.review_required}")
+        reason_parts.append(f"flagged_fields={','.join(flagged_fields)}")
+    return "; ".join(reason_parts)
+
+
+def _recommended_action(report: VerificationReport) -> str:
+    """검토 유형에 맞는 권장 조치를 선택한다."""
+
+    if report.existence_check.status in EXISTENCE_REVIEW_STATUSES:
+        return "특허 실재 여부와 공개/등록 번호를 우선 수동 확인한다."
+    if any(result.status == VerificationStatus.MISMATCHED for result in report.results):
+        return "불일치 필드를 원문 기준으로 대조해 canonical 값 또는 provider 근거를 재검토한다."
+    if any(result.status == VerificationStatus.MANUAL_REVIEW_REQUIRED for result in report.results):
+        return "근거가 부족한 필드를 원문 스캔 또는 수동 조사로 보완한다."
+    if any(result.status == VerificationStatus.PARTIALLY_MATCHED for result in report.results):
+        return "부분 일치 필드를 원문 기준으로 확인해 최종 값을 확정한다."
+    return "검증 결과를 수동으로 확인한다."
+
+
+def build_verification_review_manifest(
+    verification_artifact: VerificationArtifact,
+    *,
+    source_artifact_path: Path,
+) -> VerificationReviewManifest | None:
+    """verification artifact에서 수동 검토 입력 manifest를 생성한다."""
+
+    items: list[VerificationReviewItem] = []
+    for report in verification_artifact.reports:
+        if not _report_needs_review_item(report):
+            continue
+
+        flagged_fields = _collect_flagged_fields(report)
+        items.append(
+            VerificationReviewItem(
+                document_id=report.document_id,
+                provider_name=report.provider_name,
+                review_reason=_build_review_reason(report, flagged_fields),
+                existence_status=report.existence_check.status,
+                flagged_fields=flagged_fields,
+                overall_pass=report.overall_pass,
+                source_artifact_path=str(source_artifact_path),
+                recommended_action=_recommended_action(report),
+            )
+        )
+
+    if not items:
+        return None
+
+    return VerificationReviewManifest(
+        run_id=verification_artifact.run.run_id,
+        items=sorted(items, key=lambda item: item.document_id),
+    )

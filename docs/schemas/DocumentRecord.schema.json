@@ -1,0 +1,403 @@
+{
+  "$defs": {
+    "DocumentType": {
+      "description": "문헌의 상위 유형.",
+      "enum": [
+        "paper",
+        "patent"
+      ],
+      "title": "DocumentType",
+      "type": "string"
+    },
+    "PaperMetadata": {
+      "additionalProperties": false,
+      "description": "논문 전용 메타데이터.",
+      "properties": {
+        "authors": {
+          "description": "저자 목록",
+          "items": {
+            "type": "string"
+          },
+          "title": "Authors",
+          "type": "array"
+        },
+        "doi": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "DOI",
+          "title": "Doi"
+        },
+        "license": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "라이선스 정보",
+          "title": "License"
+        },
+        "metadata_type": {
+          "const": "paper",
+          "default": "paper",
+          "title": "Metadata Type",
+          "type": "string"
+        },
+        "pdf_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "PDF URL",
+          "title": "Pdf Url"
+        },
+        "publication_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "논문 유형",
+          "title": "Publication Type"
+        },
+        "publisher": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "출판사",
+          "title": "Publisher"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "게재 학회 또는 저널",
+          "title": "Venue"
+        }
+      },
+      "title": "PaperMetadata",
+      "type": "object"
+    },
+    "PatentMetadata": {
+      "additionalProperties": false,
+      "description": "특허 전용 메타데이터.",
+      "properties": {
+        "applicants": {
+          "description": "출원인 목록",
+          "items": {
+            "type": "string"
+          },
+          "title": "Applicants",
+          "type": "array"
+        },
+        "application_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "출원번호",
+          "title": "Application Number"
+        },
+        "assignees": {
+          "description": "권리자 목록",
+          "items": {
+            "type": "string"
+          },
+          "title": "Assignees",
+          "type": "array"
+        },
+        "cpc_codes": {
+          "description": "CPC 분류 코드",
+          "items": {
+            "type": "string"
+          },
+          "title": "Cpc Codes",
+          "type": "array"
+        },
+        "family_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "패밀리 식별자",
+          "title": "Family Id"
+        },
+        "filing_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "출원일",
+          "title": "Filing Date"
+        },
+        "grant_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "등록일",
+          "title": "Grant Date"
+        },
+        "inventors": {
+          "description": "발명자 목록",
+          "items": {
+            "type": "string"
+          },
+          "title": "Inventors",
+          "type": "array"
+        },
+        "ipc_codes": {
+          "description": "IPC 분류 코드",
+          "items": {
+            "type": "string"
+          },
+          "title": "Ipc Codes",
+          "type": "array"
+        },
+        "jurisdiction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "관할 국가 또는 기관",
+          "title": "Jurisdiction"
+        },
+        "metadata_type": {
+          "const": "patent",
+          "default": "patent",
+          "title": "Metadata Type",
+          "type": "string"
+        },
+        "patent_number": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "공개 또는 등록 특허번호",
+          "title": "Patent Number"
+        },
+        "publication_date": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "공개일",
+          "title": "Publication Date"
+        }
+      },
+      "title": "PatentMetadata",
+      "type": "object"
+    },
+    "ReviewStatus": {
+      "description": "문헌 또는 자산의 검수 상태.",
+      "enum": [
+        "pending",
+        "manual_review_required",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "정규화된 공통 문헌 엔터티.",
+  "properties": {
+    "abstract_text": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "정규화된 초록 또는 요약",
+      "title": "Abstract Text"
+    },
+    "canonical_title": {
+      "description": "정규화된 제목",
+      "title": "Canonical Title",
+      "type": "string"
+    },
+    "canonical_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "대표 URL",
+      "title": "Canonical Url"
+    },
+    "dedup_candidate_keys": {
+      "description": "중복 후보 비교를 위한 canonical key 목록",
+      "items": {
+        "type": "string"
+      },
+      "title": "Dedup Candidate Keys",
+      "type": "array"
+    },
+    "document_id": {
+      "description": "정규화된 문헌 식별자",
+      "title": "Document Id",
+      "type": "string"
+    },
+    "document_type": {
+      "$ref": "#/$defs/DocumentType",
+      "description": "문헌 유형"
+    },
+    "fingerprint": {
+      "description": "중복 판단에 사용하는 fingerprint",
+      "title": "Fingerprint",
+      "type": "string"
+    },
+    "language": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "문헌 언어",
+      "title": "Language"
+    },
+    "metadata": {
+      "description": "문헌 유형별 세부 메타데이터",
+      "discriminator": {
+        "mapping": {
+          "paper": "#/$defs/PaperMetadata",
+          "patent": "#/$defs/PatentMetadata"
+        },
+        "propertyName": "metadata_type"
+      },
+      "oneOf": [
+        {
+          "$ref": "#/$defs/PaperMetadata"
+        },
+        {
+          "$ref": "#/$defs/PatentMetadata"
+        }
+      ],
+      "title": "Metadata"
+    },
+    "publication_date": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "대표 공개일",
+      "title": "Publication Date"
+    },
+    "review_status": {
+      "$ref": "#/$defs/ReviewStatus",
+      "default": "pending",
+      "description": "현재 검수 상태"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_record_ids": {
+      "description": "병합된 원시 레코드 목록",
+      "items": {
+        "type": "string"
+      },
+      "title": "Source Record Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "document_id",
+    "document_type",
+    "canonical_title",
+    "fingerprint",
+    "metadata"
+  ],
+  "title": "DocumentRecord",
+  "type": "object"
+}

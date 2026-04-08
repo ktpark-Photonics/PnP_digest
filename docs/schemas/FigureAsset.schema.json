@@ -1,0 +1,134 @@
+{
+  "$defs": {
+    "LicenseStatus": {
+      "description": "figure 라이선스 상태.",
+      "enum": [
+        "unknown",
+        "not_allowed",
+        "allowed_with_attribution",
+        "licensed",
+        "manual_review_required"
+      ],
+      "title": "LicenseStatus",
+      "type": "string"
+    },
+    "ReviewStatus": {
+      "description": "문헌 또는 자산의 검수 상태.",
+      "enum": [
+        "pending",
+        "manual_review_required",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
+      "type": "string"
+    }
+  },
+  "additionalProperties": false,
+  "description": "문헌 figure 자산과 라이선스 상태.",
+  "properties": {
+    "approved_for_output": {
+      "default": false,
+      "description": "최종 산출물 삽입 가능 여부",
+      "title": "Approved For Output",
+      "type": "boolean"
+    },
+    "asset_path": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "저장된 이미지 경로",
+      "title": "Asset Path"
+    },
+    "caption": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "figure caption",
+      "title": "Caption"
+    },
+    "document_id": {
+      "description": "연결된 문헌 ID",
+      "title": "Document Id",
+      "type": "string"
+    },
+    "figure_id": {
+      "description": "figure 식별자",
+      "title": "Figure Id",
+      "type": "string"
+    },
+    "figure_label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "문헌 내부 label",
+      "title": "Figure Label"
+    },
+    "license_source": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "라이선스 근거",
+      "title": "License Source"
+    },
+    "license_status": {
+      "$ref": "#/$defs/LicenseStatus",
+      "description": "라이선스 상태"
+    },
+    "manual_review_status": {
+      "$ref": "#/$defs/ReviewStatus",
+      "description": "수동 검토 상태"
+    },
+    "schema_version": {
+      "default": "0.1.0",
+      "description": "적용된 canonical schema 버전",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "source_locator": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "원문 내 위치",
+      "title": "Source Locator"
+    }
+  },
+  "required": [
+    "figure_id",
+    "document_id",
+    "license_status",
+    "manual_review_status"
+  ],
+  "title": "FigureAsset",
+  "type": "object"
+}

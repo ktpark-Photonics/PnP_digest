@@ -207,6 +207,58 @@ class VerificationArtifact(DigestBaseModel):
     reports: list[VerificationReport] = Field(default_factory=list, description="특허 검증 결과 목록")
 
 
+class VerificationReviewItem(DigestBaseModel):
+    """verify 결과에서 수동 검토가 필요한 문헌 요약 항목."""
+
+    document_id: str = Field(description="검토 대상 문헌 ID")
+    provider_name: str = Field(description="사용한 특허 검증 provider 이름")
+    review_reason: str = Field(description="검토 필요 사유 요약")
+    existence_status: VerificationStatus = Field(description="존재 확인 상태")
+    flagged_fields: list[str] = Field(min_length=1, description="주의가 필요한 필드 목록")
+    overall_pass: bool = Field(description="전체 검증 통과 여부")
+    source_artifact_path: str = Field(description="원본 verification artifact 경로")
+    recommended_action: str = Field(description="권장 후속 조치")
+
+
+class VerificationReviewManifest(DigestBaseModel):
+    """verify 단계 수동 검토 입력 manifest."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run_id: str = Field(description="연결된 run ID")
+    review_stage: ReviewStage = Field(default=ReviewStage.VERIFICATION, description="검토 단계")
+    items: list[VerificationReviewItem] = Field(default_factory=list, description="수동 검토 항목")
+
+
+class VerificationReviewResolutionItem(DigestBaseModel):
+    """수동 검토 후 확정된 verify 검토 결과."""
+
+    document_id: str = Field(description="검토 대상 문헌 ID")
+    provider_name: str = Field(description="사용한 특허 검증 provider 이름")
+    existence_status: VerificationStatus = Field(description="존재 확인 상태")
+    flagged_fields: list[str] = Field(min_length=1, description="검토가 필요했던 필드 목록")
+    review_status: ReviewStatus = Field(description="사람 검토 후 최종 상태")
+    reviewer: str | None = Field(default=None, description="검토자 이름 또는 식별자")
+    review_notes: str | None = Field(default=None, description="검토 메모")
+    resolved_fields: list[str] = Field(default_factory=list, description="검토 후 해소된 필드 목록")
+    review_reason: str = Field(description="초기 검토 필요 사유")
+    source_artifact_path: str = Field(description="원본 verification artifact 경로")
+
+
+class VerificationReviewResolutionArtifact(DigestBaseModel):
+    """verification review CSV를 import한 결과 artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run_id: str = Field(description="연결된 run ID")
+    review_stage: ReviewStage = Field(default=ReviewStage.VERIFICATION, description="검토 단계")
+    source_manifest_path: str = Field(description="입력 verification review manifest 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    items: list[VerificationReviewResolutionItem] = Field(
+        default_factory=list,
+        description="수동 검토 반영 결과 목록",
+    )
+
+
 class AudienceExplanation(DigestBaseModel):
     """직급별 설명 정책을 구조화한 블록."""
 
@@ -237,6 +289,46 @@ class SummaryPayload(DigestBaseModel):
     director_level_explanation: AudienceExplanation = Field(description="부장급 설명")
     summary_confidence: float = Field(ge=0.0, le=1.0, description="요약 신뢰도")
     human_review_notes: str | None = Field(default=None, description="사람 검수 메모")
+
+
+class SummaryRecord(DigestBaseModel):
+    """단일 문헌에 대한 구조화 요약 결과."""
+
+    document_id: str = Field(description="요약 대상 문헌 ID")
+    document_type: DocumentType = Field(description="문헌 유형")
+    document_title: str = Field(description="문헌 제목")
+    source_review_status: ReviewStatus = Field(description="요약에 반영된 수동 검토 상태")
+    summary: SummaryPayload = Field(description="근거 연결형 구조화 요약")
+
+
+class SummaryArtifact(DigestBaseModel):
+    """summarize 단계 산출물."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    summaries: list[SummaryRecord] = Field(default_factory=list, description="문헌별 구조화 요약 목록")
+
+
+class ExplainRecord(DigestBaseModel):
+    """단일 문헌에 대한 직급별 설명 결과."""
+
+    document_id: str = Field(description="설명 대상 문헌 ID")
+    document_type: DocumentType = Field(description="문헌 유형")
+    document_title: str = Field(description="문헌 제목")
+    source_review_status: ReviewStatus = Field(description="설명에 반영된 수동 검토 상태")
+    summary_confidence: float = Field(ge=0.0, le=1.0, description="원본 요약 신뢰도")
+    entry_level_explanation: AudienceExplanation = Field(description="신입사원용 설명")
+    manager_level_explanation: AudienceExplanation = Field(description="과장급 설명")
+    director_level_explanation: AudienceExplanation = Field(description="부장급 설명")
+    human_review_notes: str | None = Field(default=None, description="사람 검토 메모")
+
+
+class ExplainArtifact(DigestBaseModel):
+    """explain 단계 산출물."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    explanations: list[ExplainRecord] = Field(default_factory=list, description="문헌별 직급 설명 목록")
 
 
 class FigureAsset(DigestBaseModel):
@@ -290,6 +382,14 @@ class OutputBundle(DigestBaseModel):
     included_document_ids: list[str] = Field(default_factory=list, description="포함된 문헌 ID")
     output_path: str = Field(description="산출물 경로")
     approval_status: ApprovalStatus = Field(description="배포 승인 상태")
+
+
+class RenderArtifact(DigestBaseModel):
+    """render 단계 산출물."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    bundles: list[OutputBundle] = Field(default_factory=list, description="생성된 출력 bundle 목록")
 
 
 class SamplePaperPayload(DigestBaseModel):

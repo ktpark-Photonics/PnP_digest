@@ -5,10 +5,15 @@ from pathlib import Path
 
 from pnp_digest.domain import (
     DocumentRecord,
+    ExplainArtifact,
     ManualReviewManifest,
     RelevanceArtifact,
+    RenderArtifact,
+    SummaryArtifact,
     SummaryPayload,
     VerificationArtifact,
+    VerificationReviewManifest,
+    VerificationReviewResolutionArtifact,
     VerificationReport,
 )
 
@@ -36,9 +41,14 @@ def test_schema_summary_snapshot_matches_models() -> None:
         "DocumentRecord": _schema_summary(DocumentRecord),
         "SummaryPayload": _schema_summary(SummaryPayload),
         "RelevanceArtifact": _schema_summary(RelevanceArtifact),
+        "SummaryArtifact": _schema_summary(SummaryArtifact),
+        "ExplainArtifact": _schema_summary(ExplainArtifact),
+        "RenderArtifact": _schema_summary(RenderArtifact),
         "ManualReviewManifest": _schema_summary(ManualReviewManifest),
         "VerificationReport": _schema_summary(VerificationReport),
         "VerificationArtifact": _schema_summary(VerificationArtifact),
+        "VerificationReviewManifest": _schema_summary(VerificationReviewManifest),
+        "VerificationReviewResolutionArtifact": _schema_summary(VerificationReviewResolutionArtifact),
     }
 
     assert current == snapshot

@@ -10,11 +10,15 @@ from pnp_digest.domain.models import (
     NormalizedArtifact,
     StageExecutionState,
     VerificationArtifact,
+    VerificationReviewManifest,
     VerificationReport,
 )
 from pnp_digest.services.artifacts import ArtifactManager
 from pnp_digest.services.io import read_model, write_model
-from pnp_digest.services.verification import load_patent_verification_provider
+from pnp_digest.services.verification import (
+    build_verification_review_manifest,
+    load_patent_verification_provider,
+)
 
 
 def _build_report_review_flags(report: VerificationReport) -> tuple[bool, bool]:
@@ -33,7 +37,7 @@ def run_verify(
     artifact_root: Path,
     provider_name: str,
     provider_data_path: Path,
-) -> VerificationArtifact:
+) -> tuple[VerificationArtifact, VerificationReviewManifest | None]:
     """normalized artifact를 읽어 특허 검증 artifact를 생성한다."""
 
     normalized_artifact = read_model(normalized_artifact_path, NormalizedArtifact)
@@ -91,4 +95,12 @@ def run_verify(
 
     artifact = VerificationArtifact(run=updated_run, reports=reports)
     write_model(artifact_path, artifact)
-    return artifact
+
+    review_manifest = build_verification_review_manifest(
+        artifact,
+        source_artifact_path=artifact_path,
+    )
+    if review_manifest is not None:
+        write_model(stage_dir / "verification_review_manifest.json", review_manifest)
+
+    return artifact, review_manifest

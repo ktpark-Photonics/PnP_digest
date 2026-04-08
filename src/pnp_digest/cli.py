@@ -45,6 +45,7 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
 
     from pnp_digest.domain import (
         DocumentRecord,
+        ExplainArtifact,
         FigureAsset,
         IngestArtifact,
         ManualReviewManifest,
@@ -54,9 +55,13 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         RawSourceRecord,
         RelevanceArtifact,
         RelevanceAssessment,
+        RenderArtifact,
         ReviewTask,
+        SummaryArtifact,
         SummaryPayload,
         VerificationArtifact,
+        VerificationReviewManifest,
+        VerificationReviewResolutionArtifact,
         VerificationReport,
         VerificationResult,
     )
@@ -71,6 +76,11 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         VerificationResult,
         VerificationReport,
         VerificationArtifact,
+        VerificationReviewManifest,
+        VerificationReviewResolutionArtifact,
+        SummaryArtifact,
+        ExplainArtifact,
+        RenderArtifact,
         SummaryPayload,
         FigureAsset,
         ReviewTask,
@@ -168,30 +178,58 @@ def verify(
 
     from pnp_digest.pipelines.verify import run_verify
 
-    artifact = run_verify(
+    artifact, review_manifest = run_verify(
         run_id=run_id,
         normalized_artifact_path=normalized_artifact,
         artifact_root=artifact_root,
         provider_name=provider,
         provider_data_path=provider_data,
     )
-    typer.echo(f"verify 완료: {len(artifact.reports)}건 특허 검증")
+    review_count = len(review_manifest.items) if review_manifest is not None else 0
+    typer.echo(f"verify 완료: {len(artifact.reports)}건 특허 검증, {review_count}건 수동 검토")
 
 
 @app.command("summarize")
-def summarize() -> None:
-    """요약 stage skeleton."""
+def summarize(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    normalized_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="normalized artifact 경로"),
+    verification_review_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review import로 생성된 verification review resolution artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+) -> None:
+    """승인된 verification review 결과만 summary artifact로 변환한다."""
 
-    typer.echo("Phase 0에서는 summarize가 아직 skeleton 상태입니다.")
-    announce_phase_stub("summarize")
+    from pnp_digest.pipelines.summarize import run_summarize
+
+    artifact = run_summarize(
+        run_id=run_id,
+        normalized_artifact_path=normalized_artifact,
+        verification_review_resolution_path=verification_review_resolution,
+        artifact_root=artifact_root,
+    )
+    typer.echo(f"summarize 완료: {len(artifact.summaries)}건 요약")
 
 
 @app.command("explain")
-def explain() -> None:
-    """직급별 설명 stage skeleton."""
+def explain(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    summary_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="summary artifact 경로"),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+) -> None:
+    """summary artifact를 직급별 설명 artifact로 변환한다."""
 
-    typer.echo("Phase 0에서는 explain이 아직 skeleton 상태입니다.")
-    announce_phase_stub("explain")
+    from pnp_digest.pipelines.explain import run_explain
+
+    artifact = run_explain(
+        run_id=run_id,
+        summary_artifact_path=summary_artifact,
+        artifact_root=artifact_root,
+    )
+    typer.echo(f"explain 완료: {len(artifact.explanations)}건 설명")
 
 
 review_app = typer.Typer(help="파일 기반 검수 보조 명령")
@@ -199,27 +237,90 @@ app.add_typer(review_app, name="review")
 
 
 @review_app.command("export")
-def review_export() -> None:
-    """검수 export skeleton."""
+def review_export(
+    verification_review_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="verification review manifest JSON 경로",
+    ),
+    export_format: str = typer.Option("csv", "--format", help="export 형식 (csv/markdown)"),
+    output_path: Path | None = typer.Option(None, help="출력 파일 경로"),
+) -> None:
+    """수동 검토용 verification manifest를 CSV 또는 Markdown으로 내보낸다."""
 
-    typer.echo("Phase 0에서는 review export가 아직 skeleton 상태입니다.")
-    announce_phase_stub("review export")
+    from pnp_digest.domain import VerificationReviewManifest
+    from pnp_digest.services.io import read_model
+    from pnp_digest.services.review_export import (
+        export_verification_review_manifest,
+        normalize_review_export_format,
+    )
+
+    try:
+        normalized_format = normalize_review_export_format(export_format)
+    except ValueError as error:
+        raise typer.BadParameter(str(error), param_hint="--format") from error
+
+    manifest = read_model(verification_review_manifest, VerificationReviewManifest)
+    written_path = export_verification_review_manifest(
+        manifest,
+        source_manifest_path=verification_review_manifest,
+        export_format=normalized_format,
+        output_path=output_path,
+    )
+    typer.echo(f"review export 완료: {len(manifest.items)}건 -> {written_path}")
 
 
 @review_app.command("import")
-def review_import() -> None:
-    """검수 import skeleton."""
+def review_import(
+    verification_review_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="verification review manifest JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 verification review CSV를 JSON artifact로 가져온다."""
 
-    typer.echo("Phase 0에서는 review import가 아직 skeleton 상태입니다.")
-    announce_phase_stub("review import")
+    from pnp_digest.pipelines.review import run_import_verification_review
+
+    artifact, written_path = run_import_verification_review(
+        verification_review_manifest_path=verification_review_manifest,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(f"review import 완료: {len(artifact.items)}건 -> {written_path}")
 
 
 @app.command("render")
-def render() -> None:
-    """문서 렌더 stage skeleton."""
+def render(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    explain_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="explain artifact 경로"),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="생성할 Markdown brief 경로"),
+    title: str = typer.Option("PnP Digest Brief", help="Markdown brief 제목"),
+) -> None:
+    """explain artifact를 Markdown brief와 render artifact로 변환한다."""
 
-    typer.echo("Phase 0에서는 render가 아직 skeleton 상태입니다.")
-    announce_phase_stub("render")
+    from pnp_digest.pipelines.render import run_render
+
+    artifact, written_path = run_render(
+        run_id=run_id,
+        explain_artifact_path=explain_artifact,
+        artifact_root=artifact_root,
+        output_path=output_path,
+        brief_title=title,
+    )
+    typer.echo(f"render 완료: {len(artifact.bundles)}개 bundle -> {written_path}")
 
 
 if __name__ == "__main__":
