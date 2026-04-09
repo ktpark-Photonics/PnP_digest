@@ -52,9 +52,13 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         NormalizedArtifact,
         OutputBundle,
         PipelineRun,
+        PublishArtifact,
+        PublishReviewResolutionArtifact,
         RawSourceRecord,
         RelevanceArtifact,
         RelevanceAssessment,
+        ReleaseManifest,
+        ReleaseReviewResolutionArtifact,
         RenderArtifact,
         ReviewTask,
         SummaryArtifact,
@@ -81,6 +85,10 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         SummaryArtifact,
         ExplainArtifact,
         RenderArtifact,
+        ReleaseManifest,
+        ReleaseReviewResolutionArtifact,
+        PublishReviewResolutionArtifact,
+        PublishArtifact,
         SummaryPayload,
         FigureAsset,
         ReviewTask,
@@ -301,6 +309,125 @@ def review_import(
     typer.echo(f"review import 완료: {len(artifact.items)}건 -> {written_path}")
 
 
+@review_app.command("release-export")
+def review_release_export(
+    release_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="release manifest JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 CSV 경로"),
+) -> None:
+    """최종 배포 검토용 release manifest를 CSV로 내보낸다."""
+
+    from pnp_digest.domain import ReleaseManifest
+    from pnp_digest.services.io import read_model
+    from pnp_digest.services.release_review import export_release_review_manifest
+
+    manifest = read_model(release_manifest, ReleaseManifest)
+    written_path = export_release_review_manifest(
+        manifest,
+        source_manifest_path=release_manifest,
+        output_path=output_path,
+    )
+    typer.echo(f"review release export 완료: {len(manifest.bundles)}개 bundle -> {written_path}")
+
+
+@review_app.command("release-import")
+def review_release_import(
+    release_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="release manifest JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="release-export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 release review CSV를 JSON artifact로 가져온다."""
+
+    from pnp_digest.pipelines.review import run_import_release_review
+
+    artifact, written_path = run_import_release_review(
+        release_manifest_path=release_manifest,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review release import 완료: "
+        f"signoff={artifact.review_signoff} -> {written_path}"
+    )
+
+
+@review_app.command("publish-export")
+def review_publish_export(
+    publish_artifact: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="publish artifact JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 CSV 경로"),
+) -> None:
+    """publish artifact를 사람이 확인할 CSV로 내보낸다."""
+
+    from pnp_digest.domain import PublishArtifact
+    from pnp_digest.services.io import read_model
+    from pnp_digest.services.publish_review import export_publish_review_manifest
+
+    artifact = read_model(publish_artifact, PublishArtifact)
+    written_path = export_publish_review_manifest(
+        artifact,
+        source_publish_artifact_path=publish_artifact,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review publish export 완료: "
+        f"{len(artifact.publish_records)}개 record -> {written_path}"
+    )
+
+
+@review_app.command("publish-import")
+def review_publish_import(
+    publish_artifact: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="publish artifact JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="publish-export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 publish review CSV를 JSON artifact로 가져온다."""
+
+    from pnp_digest.pipelines.review import run_import_publish_review
+
+    artifact, written_path = run_import_publish_review(
+        publish_artifact_path=publish_artifact,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review publish import 완료: "
+        f"published={artifact.published_record_count}, failed={artifact.failed_record_count} -> {written_path}"
+    )
+
+
 @app.command("render")
 def render(
     run_id: str = typer.Option(..., help="주간 실행 ID"),
@@ -332,6 +459,75 @@ def render(
         brief_title=title,
     )
     typer.echo(f"render 완료: {len(artifact.bundles)}개 bundle -> {written_path}")
+
+
+@app.command("release")
+def release(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    render_artifact: Path = typer.Option(..., exists=True, dir_okay=False, help="render artifact 경로"),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    distribution_targets: list[str] = typer.Option(
+        ["internal"],
+        "--distribution-target",
+        help="배포 대상 채널",
+    ),
+    release_notes: list[str] = typer.Option(
+        [],
+        "--release-note",
+        help="release manifest에 남길 메모",
+    ),
+    mark_published: bool = typer.Option(
+        False,
+        "--mark-published",
+        help="모든 bundle이 승인 상태일 때 published_at을 함께 기록한다.",
+    ),
+) -> None:
+    """render artifact를 release manifest로 정리한다."""
+
+    from pnp_digest.pipelines.release import run_release
+
+    manifest = run_release(
+        run_id=run_id,
+        render_artifact_path=render_artifact,
+        artifact_root=artifact_root,
+        distribution_targets=distribution_targets,
+        release_notes=release_notes,
+        mark_published=mark_published,
+    )
+    typer.echo(
+        "release 완료: "
+        f"{len(manifest.bundles)}개 bundle 정리, "
+        f"{len(manifest.approved_bundle_ids)}개 승인 bundle"
+    )
+
+
+@app.command("publish")
+def publish(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    release_review_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review release-import로 생성된 release review resolution artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+) -> None:
+    """release review resolution을 publish stub artifact로 변환한다."""
+
+    from pnp_digest.pipelines.publish import run_publish
+
+    artifact = run_publish(
+        run_id=run_id,
+        release_review_resolution_path=release_review_resolution,
+        artifact_root=artifact_root,
+    )
+    if artifact.blocked_reason:
+        typer.echo(
+            "publish 완료: "
+            f"{len(artifact.publish_records)}건 simulated publish, blocked={artifact.blocked_reason}"
+        )
+        return
+    typer.echo(f"publish 완료: {len(artifact.publish_records)}건 simulated publish")
 
 
 if __name__ == "__main__":

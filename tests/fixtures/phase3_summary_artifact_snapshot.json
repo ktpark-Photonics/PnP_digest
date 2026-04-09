@@ -1,0 +1,104 @@
+{
+  "run": {
+    "config_version": "phase2-default",
+    "domain": "cmos_image_sensor",
+    "ended_at": null,
+    "operator": "tester",
+    "run_id": "phase2-patent-verify",
+    "schema_version": "0.1.0",
+    "stage_status": {
+      "summarize": {
+        "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+        "message": "승인 문헌 1건에 대한 placeholder summary 생성 완료",
+        "status": "completed",
+        "updated_at": "__DYNAMIC_UPDATED_AT__"
+      }
+    },
+    "started_at": "2026-04-01T09:00:00Z",
+    "week_start": "2026-03-30"
+  },
+  "schema_version": "0.1.0",
+  "summaries": [
+    {
+      "document_id": "patent:number:sample-us-match-001-a1",
+      "document_title": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+      "document_type": "patent",
+      "source_review_status": "approved",
+      "summary": {
+        "background_context": "[SAMPLE] Pixel isolation structure for CMOS image sensor 문헌은 verification review에서 승인되어 summarize 단계로 전달되었다.",
+        "core_idea": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+        "director_level_explanation": {
+          "action_prompt": "원문과 수동 검토 메모를 함께 확인해 후속 설명을 보강한다.",
+          "audience_focus": [
+            "핵심 아이디어",
+            "후속 검토 포인트"
+          ],
+          "cautions": [
+            "현재 단계는 placeholder 기반 요약이며 후속 보강이 필요하다."
+          ],
+          "explanation_text": "[SAMPLE] Pixel isolation structure for CMOS image sensor 문헌의 현재 요약 초안은 배치형 후속 단계 연결을 위한 승인 문헌 요약 초안 상태다.",
+          "key_points": [
+            "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+            "배치형 후속 단계 연결을 위한 승인 문헌 요약 초안 상태다."
+          ],
+          "purpose": "부장 관점에서 문헌 핵심을 빠르게 공유한다."
+        },
+        "entry_level_explanation": {
+          "action_prompt": "원문과 수동 검토 메모를 함께 확인해 후속 설명을 보강한다.",
+          "audience_focus": [
+            "핵심 아이디어",
+            "후속 검토 포인트"
+          ],
+          "cautions": [
+            "현재 단계는 placeholder 기반 요약이며 후속 보강이 필요하다."
+          ],
+          "explanation_text": "[SAMPLE] Pixel isolation structure for CMOS image sensor 문헌의 현재 요약 초안은 Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+          "key_points": [
+            "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+            "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS."
+          ],
+          "purpose": "신입 관점에서 문헌 핵심을 빠르게 공유한다."
+        },
+        "evidence_links_or_snippets": [
+          {
+            "locator": "abstract",
+            "snippet_text": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+            "source_url": "https://example.invalid/patent:number:sample-us-match-001-a1",
+            "supports_fields": [
+              "background_context",
+              "problem_statement",
+              "purpose",
+              "core_idea",
+              "expected_effect"
+            ]
+          }
+        ],
+        "expected_effect": "[SAMPLE] Pixel isolation structure for CMOS image sensor 문헌의 핵심 포인트를 후속 explain/render 단계에서 재사용할 수 있다.",
+        "human_review_notes": "초록과 제목 일치 확인 후 summarize 승인",
+        "limitations_or_unknowns": [
+          "현재 Phase 3 첫 구현으로 placeholder 기반 요약만 제공한다."
+        ],
+        "manager_level_explanation": {
+          "action_prompt": "원문과 수동 검토 메모를 함께 확인해 후속 설명을 보강한다.",
+          "audience_focus": [
+            "핵심 아이디어",
+            "후속 검토 포인트"
+          ],
+          "cautions": [
+            "현재 단계는 placeholder 기반 요약이며 후속 보강이 필요하다."
+          ],
+          "explanation_text": "[SAMPLE] Pixel isolation structure for CMOS image sensor 문헌의 현재 요약 초안은 검토 승인된 초록 기반 핵심을 빠르게 파악할 수 있는 상태다.",
+          "key_points": [
+            "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+            "검토 승인된 초록 기반 핵심을 빠르게 파악할 수 있는 상태다."
+          ],
+          "purpose": "과장 관점에서 문헌 핵심을 빠르게 공유한다."
+        },
+        "problem_statement": "현재 구현은 원문 전체 파싱 없이 검토 완료 문헌만 선별해 placeholder 요약을 생성한다.",
+        "purpose": "Synthetic fixture only. Pixel isolation trench reduces cross-talk in CIS.",
+        "schema_version": "0.1.0",
+        "summary_confidence": 0.55
+      }
+    }
+  ]
+}

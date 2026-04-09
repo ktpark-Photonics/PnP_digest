@@ -12,6 +12,7 @@ from pnp_digest.domain.enums import (
     DocumentType,
     LicenseStatus,
     OutputType,
+    PublishStatus,
     RelevanceDecision,
     ReviewStage,
     ReviewStatus,
@@ -390,6 +391,126 @@ class RenderArtifact(DigestBaseModel):
     schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
     run: PipelineRun = Field(description="연결된 실행 정보")
     bundles: list[OutputBundle] = Field(default_factory=list, description="생성된 출력 bundle 목록")
+
+
+class ReleaseManifest(DigestBaseModel):
+    """release 단계 배포 manifest."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    review_stage: ReviewStage = Field(
+        default=ReviewStage.FINAL_RELEASE,
+        description="최종 배포 검토 단계",
+    )
+    source_render_artifact_path: str = Field(description="입력 render artifact 경로")
+    bundles: list[OutputBundle] = Field(default_factory=list, description="release 검토 대상 bundle 목록")
+    approved_bundle_ids: list[str] = Field(
+        default_factory=list,
+        description="현재 승인 상태인 bundle ID 목록",
+    )
+    approved_output_paths: list[str] = Field(
+        default_factory=list,
+        description="즉시 배포 가능한 출력 경로 목록",
+    )
+    release_notes: list[str] = Field(default_factory=list, description="배포 메모")
+    review_signoff: ReviewStatus = Field(description="최종 배포 검토 상태")
+    distribution_targets: list[str] = Field(default_factory=list, description="배포 대상 채널")
+    generated_at: datetime = Field(description="manifest 생성 시각")
+    published_at: datetime | None = Field(default=None, description="실제 배포 확정 시각")
+
+
+class ReleaseReviewResolutionArtifact(DigestBaseModel):
+    """release manifest 검토 CSV를 import한 결과 artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    review_stage: ReviewStage = Field(
+        default=ReviewStage.FINAL_RELEASE,
+        description="최종 배포 검토 단계",
+    )
+    source_release_manifest_path: str = Field(description="입력 release manifest 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    bundles: list[OutputBundle] = Field(default_factory=list, description="검토 시점의 release bundle 목록")
+    approved_bundle_ids: list[str] = Field(
+        default_factory=list,
+        description="release 시점에 승인 상태였던 bundle ID 목록",
+    )
+    approved_output_paths: list[str] = Field(
+        default_factory=list,
+        description="즉시 배포 가능한 출력 경로 목록",
+    )
+    distribution_targets: list[str] = Field(default_factory=list, description="배포 대상 채널")
+    release_notes: list[str] = Field(default_factory=list, description="release 메모")
+    review_signoff: ReviewStatus = Field(description="사람 검토 후 최종 배포 승인 상태")
+    reviewer: str | None = Field(default=None, description="최종 검토자 이름 또는 식별자")
+    review_notes: str | None = Field(default=None, description="최종 검토 메모")
+    published_at: datetime | None = Field(default=None, description="배포 확정 시각")
+
+
+class PublishRecord(DigestBaseModel):
+    """채널별 publish stub 결과."""
+
+    bundle_id: str = Field(description="배포 대상 bundle ID")
+    output_type: OutputType = Field(description="산출물 형식")
+    output_path: str = Field(description="산출물 경로")
+    distribution_target: str = Field(description="배포 대상 채널")
+    status: PublishStatus = Field(description="publish 결과 상태")
+    published_at: datetime | None = Field(default=None, description="publish 처리 시각")
+    external_reference: str | None = Field(default=None, description="외부 시스템 참조값")
+    notes: str | None = Field(default=None, description="stub 메모")
+
+
+class PublishArtifact(DigestBaseModel):
+    """publish 단계 산출물."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    source_release_review_resolution_path: str = Field(description="입력 release review resolution 경로")
+    review_signoff: ReviewStatus = Field(description="최종 배포 검토 승인 상태")
+    reviewer: str | None = Field(default=None, description="최종 검토자 이름 또는 식별자")
+    distribution_targets: list[str] = Field(default_factory=list, description="publish 대상 채널")
+    simulation_mode: bool = Field(default=True, description="실제 외부 배포 없이 stub만 생성했는지 여부")
+    blocked_reason: str | None = Field(default=None, description="publish가 차단된 사유")
+    publish_records: list[PublishRecord] = Field(default_factory=list, description="채널별 publish 결과 목록")
+
+
+class PublishReviewResolutionRecord(DigestBaseModel):
+    """사람이 확인한 publish 채널별 최종 상태."""
+
+    bundle_id: str = Field(description="배포 대상 bundle ID")
+    output_type: OutputType = Field(description="산출물 형식")
+    output_path: str = Field(description="산출물 경로")
+    distribution_target: str = Field(description="배포 대상 채널")
+    initial_status: PublishStatus = Field(description="publish stub가 기록한 초기 상태")
+    reviewed_status: PublishStatus = Field(description="사람 확인 후 최종 상태")
+    external_reference: str | None = Field(default=None, description="외부 시스템 참조값")
+    record_notes: str | None = Field(default=None, description="채널별 검토 메모")
+
+
+class PublishReviewResolutionArtifact(DigestBaseModel):
+    """publish 결과를 사람이 확인해 반영한 review artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    review_stage: ReviewStage = Field(default=ReviewStage.PUBLISH, description="검토 단계")
+    source_publish_artifact_path: str = Field(description="입력 publish artifact 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    simulation_mode: bool = Field(description="원본 publish artifact가 stub 실행인지 여부")
+    review_signoff: ReviewStatus = Field(description="publish 이전 최종 배포 승인 상태")
+    reviewer: str | None = Field(default=None, description="최종 확인자 이름 또는 식별자")
+    review_notes: str | None = Field(default=None, description="publish 결과 검토 메모")
+    blocked_reason: str | None = Field(default=None, description="원본 publish 단계 차단 사유")
+    published_record_count: int = Field(default=0, description="published로 확정된 채널 수")
+    failed_record_count: int = Field(default=0, description="failed로 확정된 채널 수")
+    unresolved_record_count: int = Field(default=0, description="아직 simulated 상태인 채널 수")
+    records: list[PublishReviewResolutionRecord] = Field(
+        default_factory=list,
+        description="채널별 publish 결과 확인 목록",
+    )
 
 
 class SamplePaperPayload(DigestBaseModel):

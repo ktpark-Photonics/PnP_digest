@@ -92,6 +92,103 @@
       "bundles"
     ]
   },
+  "ReleaseManifest": {
+    "required": [
+      "run",
+      "source_render_artifact_path",
+      "review_signoff",
+      "generated_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "review_stage",
+      "source_render_artifact_path",
+      "bundles",
+      "approved_bundle_ids",
+      "approved_output_paths",
+      "release_notes",
+      "review_signoff",
+      "distribution_targets",
+      "generated_at",
+      "published_at"
+    ]
+  },
+  "ReleaseReviewResolutionArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_release_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "review_signoff"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "review_stage",
+      "source_release_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "bundles",
+      "approved_bundle_ids",
+      "approved_output_paths",
+      "distribution_targets",
+      "release_notes",
+      "review_signoff",
+      "reviewer",
+      "review_notes",
+      "published_at"
+    ]
+  },
+  "PublishReviewResolutionArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_publish_artifact_path",
+      "imported_csv_path",
+      "imported_at",
+      "simulation_mode",
+      "review_signoff"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "review_stage",
+      "source_publish_artifact_path",
+      "imported_csv_path",
+      "imported_at",
+      "simulation_mode",
+      "review_signoff",
+      "reviewer",
+      "review_notes",
+      "blocked_reason",
+      "published_record_count",
+      "failed_record_count",
+      "unresolved_record_count",
+      "records"
+    ]
+  },
+  "PublishArtifact": {
+    "required": [
+      "run",
+      "source_release_review_resolution_path",
+      "review_signoff"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "source_release_review_resolution_path",
+      "review_signoff",
+      "reviewer",
+      "distribution_targets",
+      "simulation_mode",
+      "blocked_reason",
+      "publish_records"
+    ]
+  },
   "ManualReviewManifest": {
     "required": [
       "run_id"

@@ -21,6 +21,8 @@ class StageName(StrEnum):
     EXPLAIN = "explain"
     REVIEW = "review"
     RENDER = "render"
+    RELEASE = "release"
+    PUBLISH = "publish"
 
 
 class StageExecutionStatus(StrEnum):
@@ -79,6 +81,7 @@ class ReviewStage(StrEnum):
     SUMMARY = "summary"
     FIGURE = "figure"
     FINAL_RELEASE = "final_release"
+    PUBLISH = "publish"
 
 
 class ReviewTaskStatus(StrEnum):
@@ -106,3 +109,11 @@ class ApprovalStatus(StrEnum):
     PENDING_REVIEW = "pending_review"
     APPROVED = "approved"
     REJECTED = "rejected"
+
+
+class PublishStatus(StrEnum):
+    """publish stub 실행 상태."""
+
+    SIMULATED = "simulated"
+    PUBLISHED = "published"
+    FAILED = "failed"

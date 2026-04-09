@@ -156,7 +156,9 @@
         "summarize",
         "explain",
         "review",
-        "render"
+        "render",
+        "release",
+        "publish"
       ],
       "title": "StageName",
       "type": "string"

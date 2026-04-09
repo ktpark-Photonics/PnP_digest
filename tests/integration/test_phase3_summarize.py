@@ -1,5 +1,6 @@
 """Phase 3 summarize 통합 테스트."""
 
+import json
 from datetime import UTC, datetime
 from pathlib import Path
 
@@ -13,12 +14,28 @@ from pnp_digest.domain import (
     VerificationReviewResolutionItem,
     VerificationStatus,
 )
-from pnp_digest.services.io import read_model, write_model
+from pnp_digest.services.io import read_json, read_model, write_model
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RUN_ID = "phase2-patent-verify"
 runner = CliRunner()
+
+
+def _load_snapshot(file_name: str) -> dict:
+    """기대 snapshot JSON을 읽는다."""
+
+    snapshot_path = PROJECT_ROOT / "tests" / "fixtures" / file_name
+    return json.loads(snapshot_path.read_text(encoding="utf-8"))
+
+
+def _normalize_summary_artifact_snapshot(summary_payload: dict) -> dict:
+    """동적 summarize stage 필드를 placeholder로 정규화한다."""
+
+    stage_state = summary_payload["run"]["stage_status"]["summarize"]
+    stage_state["updated_at"] = "__DYNAMIC_UPDATED_AT__"
+    stage_state["artifact_path"] = "__DYNAMIC_ARTIFACT_PATH__"
+    return summary_payload
 
 
 def _build_review_resolution_artifact() -> VerificationReviewResolutionArtifact:
@@ -110,3 +127,6 @@ def test_summarize_cli_only_includes_approved_documents(tmp_path: Path) -> None:
     assert summary_record.summary.human_review_notes == "초록과 제목 일치 확인 후 summarize 승인"
     assert "verification review에서 승인" in summary_record.summary.background_context
     assert summary_record.summary.summary_confidence > 0.0
+
+    normalized_summary = _normalize_summary_artifact_snapshot(read_json(summary_artifact_path))
+    assert normalized_summary == _load_snapshot("phase3_summary_artifact_snapshot.json")

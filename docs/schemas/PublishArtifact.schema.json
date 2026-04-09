@@ -1,49 +1,15 @@
 {
   "$defs": {
-    "EvidenceSnippet": {
-      "additionalProperties": false,
-      "description": "판정 또는 요약 근거로 사용된 snippet.",
-      "properties": {
-        "locator": {
-          "description": "근거 위치 정보",
-          "title": "Locator",
-          "type": "string"
-        },
-        "snippet_text": {
-          "description": "근거 본문",
-          "title": "Snippet Text",
-          "type": "string"
-        },
-        "source_url": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "근거의 원문 URL",
-          "title": "Source Url"
-        },
-        "supports_fields": {
-          "description": "이 snippet이 뒷받침하는 필드 이름 목록",
-          "items": {
-            "type": "string"
-          },
-          "minItems": 1,
-          "title": "Supports Fields",
-          "type": "array"
-        }
-      },
-      "required": [
-        "locator",
-        "snippet_text",
-        "supports_fields"
+    "OutputType": {
+      "description": "최종 산출물 형식.",
+      "enum": [
+        "markdown",
+        "docx",
+        "pptx",
+        "pdf"
       ],
-      "title": "EvidenceSnippet",
-      "type": "object"
+      "title": "OutputType",
+      "type": "string"
     },
     "PipelineRun": {
       "additionalProperties": false,
@@ -124,108 +90,103 @@
       "title": "PipelineRun",
       "type": "object"
     },
-    "RelevanceAssessment": {
+    "PublishRecord": {
       "additionalProperties": false,
-      "description": "관련성 판정 결과와 근거.",
+      "description": "채널별 publish stub 결과.",
       "properties": {
-        "decision_reason": {
-          "description": "판정 사유 요약",
-          "title": "Decision Reason",
+        "bundle_id": {
+          "description": "배포 대상 bundle ID",
+          "title": "Bundle Id",
           "type": "string"
         },
-        "document_id": {
-          "description": "대상 문헌 ID",
-          "title": "Document Id",
+        "distribution_target": {
+          "description": "배포 대상 채널",
+          "title": "Distribution Target",
           "type": "string"
         },
-        "evidence_links_or_snippets": {
-          "description": "관련성 근거",
-          "items": {
-            "$ref": "#/$defs/EvidenceSnippet"
-          },
-          "title": "Evidence Links Or Snippets",
-          "type": "array"
-        },
-        "final_decision": {
-          "$ref": "#/$defs/RelevanceDecision",
-          "description": "최종 관련성 판정"
-        },
-        "llm_score": {
+        "external_reference": {
           "anyOf": [
             {
-              "maximum": 1.0,
-              "minimum": 0.0,
-              "type": "number"
+              "type": "string"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "description": "LLM 점수",
-          "title": "Llm Score"
+          "description": "외부 시스템 참조값",
+          "title": "External Reference"
         },
-        "matched_classifications": {
-          "description": "매칭된 분류 코드",
-          "items": {
-            "type": "string"
-          },
-          "title": "Matched Classifications",
-          "type": "array"
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "stub 메모",
+          "title": "Notes"
         },
-        "matched_terms": {
-          "description": "매칭된 용어",
-          "items": {
-            "type": "string"
-          },
-          "title": "Matched Terms",
-          "type": "array"
-        },
-        "metadata_score": {
-          "description": "메타데이터 점수",
-          "maximum": 1.0,
-          "minimum": 0.0,
-          "title": "Metadata Score",
-          "type": "number"
-        },
-        "review_required": {
-          "default": false,
-          "description": "사람 검수 필요 여부",
-          "title": "Review Required",
-          "type": "boolean"
-        },
-        "rule_score": {
-          "description": "규칙 기반 점수",
-          "maximum": 1.0,
-          "minimum": 0.0,
-          "title": "Rule Score",
-          "type": "number"
-        },
-        "schema_version": {
-          "default": "0.1.0",
-          "description": "적용된 canonical schema 버전",
-          "title": "Schema Version",
+        "output_path": {
+          "description": "산출물 경로",
+          "title": "Output Path",
           "type": "string"
+        },
+        "output_type": {
+          "$ref": "#/$defs/OutputType",
+          "description": "산출물 형식"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "publish 처리 시각",
+          "title": "Published At"
+        },
+        "status": {
+          "$ref": "#/$defs/PublishStatus",
+          "description": "publish 결과 상태"
         }
       },
       "required": [
-        "document_id",
-        "rule_score",
-        "metadata_score",
-        "final_decision",
-        "decision_reason"
+        "bundle_id",
+        "output_type",
+        "output_path",
+        "distribution_target",
+        "status"
       ],
-      "title": "RelevanceAssessment",
+      "title": "PublishRecord",
       "type": "object"
     },
-    "RelevanceDecision": {
-      "description": "관련성 판단 결과.",
+    "PublishStatus": {
+      "description": "publish stub 실행 상태.",
       "enum": [
-        "relevant",
-        "borderline",
-        "not_relevant"
+        "simulated",
+        "published",
+        "failed"
       ],
-      "title": "RelevanceDecision",
+      "title": "PublishStatus",
+      "type": "string"
+    },
+    "ReviewStatus": {
+      "description": "문헌 또는 자산의 검수 상태.",
+      "enum": [
+        "pending",
+        "manual_review_required",
+        "approved",
+        "rejected"
+      ],
+      "title": "ReviewStatus",
       "type": "string"
     },
     "StageExecutionState": {
@@ -314,15 +275,53 @@
     }
   },
   "additionalProperties": false,
-  "description": "assess-relevance 단계 산출물.",
+  "description": "publish 단계 산출물.",
   "properties": {
-    "assessments": {
-      "description": "문헌별 관련성 판정 결과",
+    "blocked_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "publish가 차단된 사유",
+      "title": "Blocked Reason"
+    },
+    "distribution_targets": {
+      "description": "publish 대상 채널",
       "items": {
-        "$ref": "#/$defs/RelevanceAssessment"
+        "type": "string"
       },
-      "title": "Assessments",
+      "title": "Distribution Targets",
       "type": "array"
+    },
+    "publish_records": {
+      "description": "채널별 publish 결과 목록",
+      "items": {
+        "$ref": "#/$defs/PublishRecord"
+      },
+      "title": "Publish Records",
+      "type": "array"
+    },
+    "review_signoff": {
+      "$ref": "#/$defs/ReviewStatus",
+      "description": "최종 배포 검토 승인 상태"
+    },
+    "reviewer": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "최종 검토자 이름 또는 식별자",
+      "title": "Reviewer"
     },
     "run": {
       "$ref": "#/$defs/PipelineRun",
@@ -333,11 +332,24 @@
       "description": "적용된 canonical schema 버전",
       "title": "Schema Version",
       "type": "string"
+    },
+    "simulation_mode": {
+      "default": true,
+      "description": "실제 외부 배포 없이 stub만 생성했는지 여부",
+      "title": "Simulation Mode",
+      "type": "boolean"
+    },
+    "source_release_review_resolution_path": {
+      "description": "입력 release review resolution 경로",
+      "title": "Source Release Review Resolution Path",
+      "type": "string"
     }
   },
   "required": [
-    "run"
+    "run",
+    "source_release_review_resolution_path",
+    "review_signoff"
   ],
-  "title": "RelevanceArtifact",
+  "title": "PublishArtifact",
   "type": "object"
 }

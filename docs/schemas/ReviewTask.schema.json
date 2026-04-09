@@ -48,7 +48,8 @@
         "verification",
         "summary",
         "figure",
-        "final_release"
+        "final_release",
+        "publish"
       ],
       "title": "ReviewStage",
       "type": "string"

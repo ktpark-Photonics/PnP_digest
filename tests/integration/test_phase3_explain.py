@@ -1,5 +1,6 @@
 """Phase 3.1 explain 통합 테스트."""
 
+import json
 from datetime import UTC, date, datetime
 from pathlib import Path
 
@@ -16,11 +17,28 @@ from pnp_digest.domain import (
     SummaryPayload,
     SummaryRecord,
 )
-from pnp_digest.services.io import read_model, write_model
+from pnp_digest.services.io import read_json, read_model, write_model
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
 RUN_ID = "phase3-explain-fixture"
 runner = CliRunner()
+
+
+def _load_snapshot(file_name: str) -> dict:
+    """기대 snapshot JSON을 읽는다."""
+
+    snapshot_path = PROJECT_ROOT / "tests" / "fixtures" / file_name
+    return json.loads(snapshot_path.read_text(encoding="utf-8"))
+
+
+def _normalize_explain_artifact_snapshot(explain_payload: dict) -> dict:
+    """동적 explain stage 필드를 placeholder로 정규화한다."""
+
+    stage_state = explain_payload["run"]["stage_status"]["explain"]
+    stage_state["updated_at"] = "__DYNAMIC_UPDATED_AT__"
+    stage_state["artifact_path"] = "__DYNAMIC_ARTIFACT_PATH__"
+    return explain_payload
 
 
 def _build_audience_explanation(audience: str, title: str) -> AudienceExplanation:
@@ -130,3 +148,6 @@ def test_explain_cli_creates_explain_artifact_from_summary_artifact(tmp_path: Pa
     assert first.summary_confidence == 0.6
     assert "신입 설명" in first.entry_level_explanation.explanation_text
     assert first.human_review_notes == "확인 완료"
+
+    normalized_explain = _normalize_explain_artifact_snapshot(read_json(explain_artifact_path))
+    assert normalized_explain == _load_snapshot("phase31_explain_artifact_snapshot.json")

@@ -24,6 +24,10 @@
 - `SummaryArtifact`
 - `ExplainArtifact`
 - `RenderArtifact`
+- `ReleaseManifest`
+- `ReleaseReviewResolutionArtifact`
+- `PublishReviewResolutionArtifact`
+- `PublishArtifact`
 - `SummaryPayload`
 - `FigureAsset`
 - `ReviewTask`
@@ -42,5 +46,9 @@
 - `SummaryArtifact`: `approved` 검토 결과만 모은 summarize 단계 artifact
 - `ExplainArtifact`: `summary_artifact`에서 직급별 설명 블록만 분리한 explain 단계 artifact
 - `RenderArtifact`: Markdown, DOCX, PDF 또는 PPTX brief 출력 경로와 bundle 메타데이터를 담는 render 단계 artifact
+- `ReleaseManifest`: render 결과와 승인 bundle 집합, 배포 메모를 정리한 release 단계 artifact
+- `ReleaseReviewResolutionArtifact`: 사람이 release manifest를 검토한 최종 signoff와 published 여부를 기록한 review 단계 artifact
+- `PublishReviewResolutionArtifact`: 사람이 publish 결과를 검토해 채널별 최종 상태와 메모를 기록한 review 단계 artifact
+- `PublishArtifact`: 승인된 release review 결과를 채널별 simulated publish 기록으로 정리한 publish 단계 artifact
 
 이 디렉터리의 JSON schema 파일은 코드 변경 후 수동으로 다시 생성해 최신 상태를 유지한다.

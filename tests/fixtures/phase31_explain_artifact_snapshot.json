@@ -1,0 +1,123 @@
+{
+  "explanations": [
+    {
+      "director_level_explanation": {
+        "action_prompt": "후속 검토",
+        "audience_focus": [
+          "핵심 아이디어"
+        ],
+        "cautions": [
+          "fixture 설명"
+        ],
+        "explanation_text": "[SAMPLE] Stacked CIS readout timing architecture에 대한 부장 설명",
+        "key_points": [
+          "[SAMPLE] Stacked CIS readout timing architecture"
+        ],
+        "purpose": "부장 관점 설명"
+      },
+      "document_id": "patent:number:sample-us-partial-001-a1",
+      "document_title": "[SAMPLE] Stacked CIS readout timing architecture",
+      "document_type": "patent",
+      "entry_level_explanation": {
+        "action_prompt": "후속 검토",
+        "audience_focus": [
+          "핵심 아이디어"
+        ],
+        "cautions": [
+          "fixture 설명"
+        ],
+        "explanation_text": "[SAMPLE] Stacked CIS readout timing architecture에 대한 신입 설명",
+        "key_points": [
+          "[SAMPLE] Stacked CIS readout timing architecture"
+        ],
+        "purpose": "신입 관점 설명"
+      },
+      "human_review_notes": "확인 완료",
+      "manager_level_explanation": {
+        "action_prompt": "후속 검토",
+        "audience_focus": [
+          "핵심 아이디어"
+        ],
+        "cautions": [
+          "fixture 설명"
+        ],
+        "explanation_text": "[SAMPLE] Stacked CIS readout timing architecture에 대한 과장 설명",
+        "key_points": [
+          "[SAMPLE] Stacked CIS readout timing architecture"
+        ],
+        "purpose": "과장 관점 설명"
+      },
+      "source_review_status": "approved",
+      "summary_confidence": 0.6
+    },
+    {
+      "director_level_explanation": {
+        "action_prompt": "후속 검토",
+        "audience_focus": [
+          "핵심 아이디어"
+        ],
+        "cautions": [
+          "fixture 설명"
+        ],
+        "explanation_text": "[SAMPLE] Pixel isolation structure for CMOS image sensor에 대한 부장 설명",
+        "key_points": [
+          "[SAMPLE] Pixel isolation structure for CMOS image sensor"
+        ],
+        "purpose": "부장 관점 설명"
+      },
+      "document_id": "patent:number:sample-us-match-001-a1",
+      "document_title": "[SAMPLE] Pixel isolation structure for CMOS image sensor",
+      "document_type": "patent",
+      "entry_level_explanation": {
+        "action_prompt": "후속 검토",
+        "audience_focus": [
+          "핵심 아이디어"
+        ],
+        "cautions": [
+          "fixture 설명"
+        ],
+        "explanation_text": "[SAMPLE] Pixel isolation structure for CMOS image sensor에 대한 신입 설명",
+        "key_points": [
+          "[SAMPLE] Pixel isolation structure for CMOS image sensor"
+        ],
+        "purpose": "신입 관점 설명"
+      },
+      "human_review_notes": null,
+      "manager_level_explanation": {
+        "action_prompt": "후속 검토",
+        "audience_focus": [
+          "핵심 아이디어"
+        ],
+        "cautions": [
+          "fixture 설명"
+        ],
+        "explanation_text": "[SAMPLE] Pixel isolation structure for CMOS image sensor에 대한 과장 설명",
+        "key_points": [
+          "[SAMPLE] Pixel isolation structure for CMOS image sensor"
+        ],
+        "purpose": "과장 관점 설명"
+      },
+      "source_review_status": "approved",
+      "summary_confidence": 0.6
+    }
+  ],
+  "run": {
+    "config_version": "phase3-default",
+    "domain": "cmos_image_sensor",
+    "ended_at": null,
+    "operator": "tester",
+    "run_id": "phase3-explain-fixture",
+    "schema_version": "0.1.0",
+    "stage_status": {
+      "explain": {
+        "artifact_path": "__DYNAMIC_ARTIFACT_PATH__",
+        "message": "직급별 설명 2건 생성 완료",
+        "status": "completed",
+        "updated_at": "__DYNAMIC_UPDATED_AT__"
+      }
+    },
+    "started_at": "2026-04-08T09:00:00Z",
+    "week_start": "2026-04-06"
+  },
+  "schema_version": "0.1.0"
+}
