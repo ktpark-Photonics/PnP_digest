@@ -513,6 +513,161 @@ class PublishReviewResolutionArtifact(DigestBaseModel):
     )
 
 
+class PublishRetryItem(DigestBaseModel):
+    """채널별 재시도 대상 항목."""
+
+    bundle_id: str = Field(description="재시도 대상 bundle ID")
+    output_type: OutputType = Field(description="산출물 형식")
+    output_path: str = Field(description="산출물 경로")
+    distribution_target: str = Field(description="재시도 대상 채널")
+    current_status: PublishStatus = Field(description="현재 확인된 채널 상태")
+    external_reference: str | None = Field(default=None, description="외부 시스템 참조값")
+    retry_reason: str = Field(description="재시도가 필요한 이유")
+    recommended_action: str = Field(description="권장 후속 조치")
+    review_notes: str | None = Field(default=None, description="원본 publish review 메모")
+
+
+class PublishRetryManifest(DigestBaseModel):
+    """publish review 결과에서 추린 재시도 대상 manifest."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_publish_review_resolution_path: str = Field(description="입력 publish review resolution 경로")
+    review_signoff: ReviewStatus = Field(description="publish 이전 최종 배포 승인 상태")
+    reviewer: str | None = Field(default=None, description="publish 결과 최종 확인자")
+    generated_at: datetime = Field(description="retry manifest 생성 시각")
+    blocked_reason: str | None = Field(default=None, description="원본 publish 단계 차단 사유")
+    retry_count: int = Field(default=0, description="재시도 대상 채널 수")
+    items: list[PublishRetryItem] = Field(default_factory=list, description="재시도 대상 목록")
+
+
+class OpsHandoffArtifact(DigestBaseModel):
+    """retry 결과를 운영 전달용 task 목록으로 정리한 artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_retry_manifest_path: str = Field(description="입력 retry manifest 경로")
+    handoff_team: str = Field(description="전달 대상 팀")
+    generated_at: datetime = Field(description="handoff artifact 생성 시각")
+    blocked_reason: str | None = Field(default=None, description="원본 retry 단계 차단 사유")
+    open_task_count: int = Field(default=0, description="열린 handoff task 수")
+    tasks: list[ReviewTask] = Field(default_factory=list, description="운영 전달용 task 목록")
+
+
+class OpsHandoffResolutionArtifact(DigestBaseModel):
+    """사람이 handoff task 상태를 갱신해 반영한 resolution artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_ops_handoff_path: str = Field(description="입력 ops handoff artifact 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    handoff_team: str = Field(description="전달 대상 팀")
+    blocked_reason: str | None = Field(default=None, description="원본 handoff 단계 차단 사유")
+    open_task_count: int = Field(default=0, description="여전히 열린 task 수")
+    closed_task_count: int = Field(default=0, description="종결된 task 수")
+    tasks: list[ReviewTask] = Field(default_factory=list, description="상태가 갱신된 task 목록")
+
+
+class OpsFollowupManifest(DigestBaseModel):
+    """handoff resolution 이후에도 남아 있는 후속 작업 목록."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_ops_handoff_resolution_path: str = Field(description="입력 ops handoff resolution 경로")
+    followup_team: str = Field(description="후속 대응 대상 팀")
+    generated_at: datetime = Field(description="followup manifest 생성 시각")
+    blocked_reason: str | None = Field(default=None, description="원본 handoff 단계 차단 사유")
+    open_task_count: int = Field(default=0, description="아직 열린 task 수")
+    in_review_task_count: int = Field(default=0, description="진행 중 task 수")
+    tasks: list[ReviewTask] = Field(default_factory=list, description="후속 대응이 필요한 task 목록")
+
+
+class OpsFollowupResolutionArtifact(DigestBaseModel):
+    """사람이 followup task 상태를 갱신해 반영한 resolution artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_followup_manifest_path: str = Field(description="입력 followup manifest 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    followup_team: str = Field(description="후속 대응 대상 팀")
+    blocked_reason: str | None = Field(default=None, description="원본 followup 단계 차단 사유")
+    open_task_count: int = Field(default=0, description="여전히 열린 task 수")
+    in_review_task_count: int = Field(default=0, description="진행 중 task 수")
+    closed_task_count: int = Field(default=0, description="종결된 task 수")
+    tasks: list[ReviewTask] = Field(default_factory=list, description="상태가 갱신된 task 목록")
+
+
+class OpsEscalationManifest(DigestBaseModel):
+    """followup resolution 이후에도 in_review인 task만 모은 escalation manifest."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_followup_resolution_path: str = Field(description="입력 followup resolution 경로")
+    escalation_team: str = Field(description="에스컬레이션 대상 팀")
+    generated_at: datetime = Field(description="escalation manifest 생성 시각")
+    blocked_reason: str | None = Field(default=None, description="원본 followup 단계 차단 사유")
+    in_review_task_count: int = Field(default=0, description="에스컬레이션이 필요한 task 수")
+    tasks: list[ReviewTask] = Field(default_factory=list, description="에스컬레이션 대상 task 목록")
+
+
+class OpsEscalationResolutionArtifact(DigestBaseModel):
+    """사람이 escalation task 상태를 갱신해 반영한 resolution artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_escalation_manifest_path: str = Field(description="입력 escalation manifest 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    escalation_team: str = Field(description="에스컬레이션 대상 팀")
+    blocked_reason: str | None = Field(default=None, description="원본 escalation 단계 차단 사유")
+    open_task_count: int = Field(default=0, description="다시 열린 task 수")
+    in_review_task_count: int = Field(default=0, description="여전히 진행 중인 task 수")
+    closed_task_count: int = Field(default=0, description="종결된 task 수")
+    tasks: list[ReviewTask] = Field(default_factory=list, description="상태가 갱신된 task 목록")
+
+
+class OpsClosureReport(DigestBaseModel):
+    """escalation resolution 이후 최종 운영 상태를 정리한 closure report."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_escalation_resolution_path: str = Field(description="입력 escalation resolution 경로")
+    closure_team: str = Field(description="종료 보고를 정리한 팀")
+    generated_at: datetime = Field(description="closure report 생성 시각")
+    blocked_reason: str | None = Field(default=None, description="원본 escalation 단계 차단 사유")
+    closed_task_count: int = Field(default=0, description="종결된 task 수")
+    remaining_task_count: int = Field(default=0, description="아직 남아 있는 task 수")
+    closed_tasks: list[ReviewTask] = Field(default_factory=list, description="종결된 task 목록")
+    remaining_tasks: list[ReviewTask] = Field(default_factory=list, description="추가 대응이 필요한 task 목록")
+
+
+class OpsClosureResolutionArtifact(DigestBaseModel):
+    """사람이 closure report 상태를 갱신해 반영한 resolution artifact."""
+
+    schema_version: str = Field(default=SCHEMA_VERSION, description="적용된 canonical schema 버전")
+    run: PipelineRun = Field(description="연결된 실행 정보")
+    run_id: str = Field(description="연결된 run ID")
+    source_closure_report_path: str = Field(description="입력 closure report 경로")
+    imported_csv_path: str = Field(description="가져온 reviewer CSV 경로")
+    imported_at: datetime = Field(description="CSV를 artifact로 반영한 시각")
+    closure_team: str = Field(description="종료 보고를 정리한 팀")
+    blocked_reason: str | None = Field(default=None, description="원본 closure 단계 차단 사유")
+    closed_task_count: int = Field(default=0, description="종결된 task 수")
+    remaining_task_count: int = Field(default=0, description="아직 남아 있는 task 수")
+    closed_tasks: list[ReviewTask] = Field(default_factory=list, description="종결된 task 목록")
+    remaining_tasks: list[ReviewTask] = Field(default_factory=list, description="추가 대응이 필요한 task 목록")
+
+
 class SamplePaperPayload(DigestBaseModel):
     """로컬 fixture에서 사용하는 논문 payload."""
 

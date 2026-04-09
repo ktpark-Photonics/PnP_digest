@@ -50,9 +50,18 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         IngestArtifact,
         ManualReviewManifest,
         NormalizedArtifact,
+        OpsClosureReport,
+        OpsClosureResolutionArtifact,
+        OpsEscalationManifest,
+        OpsEscalationResolutionArtifact,
+        OpsFollowupManifest,
+        OpsFollowupResolutionArtifact,
+        OpsHandoffArtifact,
+        OpsHandoffResolutionArtifact,
         OutputBundle,
         PipelineRun,
         PublishArtifact,
+        PublishRetryManifest,
         PublishReviewResolutionArtifact,
         RawSourceRecord,
         RelevanceArtifact,
@@ -89,6 +98,15 @@ def export_schemas(output_dir: Path = Path("docs/schemas")) -> None:
         ReleaseReviewResolutionArtifact,
         PublishReviewResolutionArtifact,
         PublishArtifact,
+        PublishRetryManifest,
+        OpsClosureReport,
+        OpsClosureResolutionArtifact,
+        OpsEscalationManifest,
+        OpsEscalationResolutionArtifact,
+        OpsFollowupManifest,
+        OpsFollowupResolutionArtifact,
+        OpsHandoffArtifact,
+        OpsHandoffResolutionArtifact,
         SummaryPayload,
         FigureAsset,
         ReviewTask,
@@ -428,6 +446,267 @@ def review_publish_import(
     )
 
 
+@review_app.command("handoff-export")
+def review_handoff_export(
+    ops_handoff: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="ops handoff artifact JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 CSV 경로"),
+) -> None:
+    """ops handoff artifact를 사람이 수정할 CSV로 내보낸다."""
+
+    from pnp_digest.domain import OpsHandoffArtifact
+    from pnp_digest.services.handoff_review import export_ops_handoff_manifest
+    from pnp_digest.services.io import read_model
+
+    artifact = read_model(ops_handoff, OpsHandoffArtifact)
+    written_path = export_ops_handoff_manifest(
+        artifact,
+        source_handoff_path=ops_handoff,
+        output_path=output_path,
+    )
+    typer.echo(f"review handoff export 완료: {len(artifact.tasks)}개 task -> {written_path}")
+
+
+@review_app.command("handoff-import")
+def review_handoff_import(
+    ops_handoff: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="ops handoff artifact JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="handoff-export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 handoff review CSV를 JSON artifact로 가져온다."""
+
+    from pnp_digest.pipelines.review import run_import_handoff_review
+
+    artifact, written_path = run_import_handoff_review(
+        ops_handoff_path=ops_handoff,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review handoff import 완료: "
+        f"open={artifact.open_task_count}, closed={artifact.closed_task_count} -> {written_path}"
+    )
+
+
+@review_app.command("followup-export")
+def review_followup_export(
+    followup_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="followup manifest JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 CSV 경로"),
+) -> None:
+    """followup manifest를 운영용 CSV 큐로 내보낸다."""
+
+    from pnp_digest.domain import OpsFollowupManifest
+    from pnp_digest.services.followup_queue import export_ops_daily_queue
+    from pnp_digest.services.io import read_model
+
+    artifact = read_model(followup_manifest, OpsFollowupManifest)
+    written_path = export_ops_daily_queue(
+        artifact,
+        source_followup_manifest_path=followup_manifest,
+        output_path=output_path,
+    )
+    typer.echo(f"review followup export 완료: {len(artifact.tasks)}개 task -> {written_path}")
+
+
+@review_app.command("escalation-export")
+def review_escalation_export(
+    escalation_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="escalation manifest JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 CSV 경로"),
+) -> None:
+    """escalation manifest를 사람이 수정할 CSV로 내보낸다."""
+
+    from pnp_digest.domain import OpsEscalationManifest
+    from pnp_digest.services.escalation_review import export_escalation_review_manifest
+    from pnp_digest.services.io import read_model
+
+    artifact = read_model(escalation_manifest, OpsEscalationManifest)
+    written_path = export_escalation_review_manifest(
+        artifact,
+        source_escalation_manifest_path=escalation_manifest,
+        output_path=output_path,
+    )
+    typer.echo(f"review escalation export 완료: {len(artifact.tasks)}개 task -> {written_path}")
+
+
+@review_app.command("closure-export")
+def review_closure_export(
+    closure_report: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="closure report JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 CSV 경로"),
+) -> None:
+    """closure report를 사람이 확인할 CSV로 내보낸다."""
+
+    from pnp_digest.domain import OpsClosureReport
+    from pnp_digest.services.closure_review import export_closure_report
+    from pnp_digest.services.io import read_model
+
+    artifact = read_model(closure_report, OpsClosureReport)
+    written_path = export_closure_report(
+        artifact,
+        source_closure_report_path=closure_report,
+        output_path=output_path,
+    )
+    total_tasks = artifact.closed_task_count + artifact.remaining_task_count
+    typer.echo(f"review closure export 완료: {total_tasks}개 task -> {written_path}")
+
+
+@review_app.command("closure-import")
+def review_closure_import(
+    closure_report: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="closure report JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="closure-export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 closure review CSV를 JSON artifact로 가져온다."""
+
+    from pnp_digest.pipelines.review import run_import_closure_review
+
+    artifact, written_path = run_import_closure_review(
+        closure_report_path=closure_report,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review closure import 완료: "
+        f"closed={artifact.closed_task_count}, remaining={artifact.remaining_task_count} -> {written_path}"
+    )
+
+
+@review_app.command("closure-brief")
+def review_closure_brief(
+    closure_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="closure resolution JSON 경로",
+    ),
+    output_path: Path | None = typer.Option(None, help="출력 Markdown 경로"),
+    title: str = typer.Option("Ops Closure Resolution Brief", help="보고서 제목"),
+) -> None:
+    """closure resolution을 사람이 공유할 Markdown 보고서로 내보낸다."""
+
+    from pnp_digest.domain import OpsClosureResolutionArtifact
+    from pnp_digest.services.closure_brief import export_closure_brief_markdown
+    from pnp_digest.services.io import read_model
+
+    artifact = read_model(closure_resolution, OpsClosureResolutionArtifact)
+    written_path = export_closure_brief_markdown(
+        artifact,
+        source_closure_resolution_path=closure_resolution,
+        output_path=output_path,
+        title=title,
+    )
+    total_tasks = artifact.closed_task_count + artifact.remaining_task_count
+    typer.echo(f"review closure brief 완료: {total_tasks}개 task -> {written_path}")
+
+
+@review_app.command("followup-import")
+def review_followup_import(
+    followup_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="followup manifest JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="followup-export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 followup review CSV를 JSON artifact로 가져온다."""
+
+    from pnp_digest.pipelines.review import run_import_followup_review
+
+    artifact, written_path = run_import_followup_review(
+        followup_manifest_path=followup_manifest,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review followup import 완료: "
+        f"open={artifact.open_task_count}, in_review={artifact.in_review_task_count}, closed={artifact.closed_task_count} -> {written_path}"
+    )
+
+
+@review_app.command("escalation-import")
+def review_escalation_import(
+    escalation_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="escalation manifest JSON 경로",
+    ),
+    review_csv: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="escalation-export 후 사람이 수정한 CSV 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    output_path: Path | None = typer.Option(None, help="출력 artifact 경로"),
+) -> None:
+    """수정된 escalation review CSV를 JSON artifact로 가져온다."""
+
+    from pnp_digest.pipelines.review import run_import_escalation_review
+
+    artifact, written_path = run_import_escalation_review(
+        escalation_manifest_path=escalation_manifest,
+        review_csv_path=review_csv,
+        artifact_root=artifact_root,
+        output_path=output_path,
+    )
+    typer.echo(
+        "review escalation import 완료: "
+        f"open={artifact.open_task_count}, in_review={artifact.in_review_task_count}, closed={artifact.closed_task_count} -> {written_path}"
+    )
+
+
 @app.command("render")
 def render(
     run_id: str = typer.Option(..., help="주간 실행 ID"),
@@ -528,6 +807,147 @@ def publish(
         )
         return
     typer.echo(f"publish 완료: {len(artifact.publish_records)}건 simulated publish")
+
+
+@app.command("retry")
+def retry(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    publish_review_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review publish-import로 생성된 publish review resolution artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+) -> None:
+    """publish review resolution을 retry manifest로 정리한다."""
+
+    from pnp_digest.pipelines.retry import run_retry
+
+    artifact = run_retry(
+        run_id=run_id,
+        publish_review_resolution_path=publish_review_resolution,
+        artifact_root=artifact_root,
+    )
+    if artifact.retry_count == 0:
+        typer.echo(f"retry 완료: {artifact.retry_count}건, blocked={artifact.blocked_reason or 'none'}")
+        return
+    typer.echo(f"retry 완료: {artifact.retry_count}건")
+
+
+@app.command("handoff")
+def handoff(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    retry_manifest: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="retry로 생성된 retry manifest artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    handoff_team: str = typer.Option("ops", help="전달 대상 팀"),
+) -> None:
+    """retry manifest를 운영 handoff artifact로 정리한다."""
+
+    from pnp_digest.pipelines.handoff import run_handoff
+
+    artifact = run_handoff(
+        run_id=run_id,
+        retry_manifest_path=retry_manifest,
+        artifact_root=artifact_root,
+        handoff_team=handoff_team,
+    )
+    if artifact.open_task_count == 0:
+        typer.echo(f"handoff 완료: {artifact.open_task_count}건, blocked={artifact.blocked_reason or 'none'}")
+        return
+    typer.echo(f"handoff 완료: {artifact.open_task_count}건 -> team={artifact.handoff_team}")
+
+
+@app.command("followup")
+def followup(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    ops_handoff_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review handoff-import로 생성된 ops handoff resolution artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    followup_team: str = typer.Option("ops", help="후속 대응 대상 팀"),
+) -> None:
+    """ops handoff resolution을 followup manifest로 정리한다."""
+
+    from pnp_digest.pipelines.followup import run_followup
+
+    artifact = run_followup(
+        run_id=run_id,
+        ops_handoff_resolution_path=ops_handoff_resolution,
+        artifact_root=artifact_root,
+        followup_team=followup_team,
+    )
+    if not artifact.tasks:
+        typer.echo(f"followup 완료: 0건, blocked={artifact.blocked_reason or 'none'}")
+        return
+    typer.echo(f"followup 완료: {len(artifact.tasks)}건 -> team={artifact.followup_team}")
+
+
+@app.command("escalation")
+def escalation(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    followup_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review followup-import로 생성된 followup resolution artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    escalation_team: str = typer.Option("ops-lead", help="에스컬레이션 대상 팀"),
+) -> None:
+    """followup resolution을 escalation manifest로 정리한다."""
+
+    from pnp_digest.pipelines.escalation import run_escalation
+
+    artifact = run_escalation(
+        run_id=run_id,
+        followup_resolution_path=followup_resolution,
+        artifact_root=artifact_root,
+        escalation_team=escalation_team,
+    )
+    if not artifact.tasks:
+        typer.echo(f"escalation 완료: 0건, blocked={artifact.blocked_reason or 'none'}")
+        return
+    typer.echo(f"escalation 완료: {len(artifact.tasks)}건 -> team={artifact.escalation_team}")
+
+
+@app.command("closure")
+def closure(
+    run_id: str = typer.Option(..., help="주간 실행 ID"),
+    escalation_resolution: Path = typer.Option(
+        ...,
+        exists=True,
+        dir_okay=False,
+        help="review escalation-import로 생성된 escalation resolution artifact 경로",
+    ),
+    artifact_root: Path = typer.Option(Path("artifacts/runs"), help="artifact 루트 경로"),
+    closure_team: str = typer.Option("ops-lead", help="최종 종료 보고를 정리할 팀"),
+) -> None:
+    """escalation resolution을 closure report로 정리한다."""
+
+    from pnp_digest.pipelines.closure import run_closure
+
+    artifact = run_closure(
+        run_id=run_id,
+        escalation_resolution_path=escalation_resolution,
+        artifact_root=artifact_root,
+        closure_team=closure_team,
+    )
+    if not artifact.closed_tasks and not artifact.remaining_tasks:
+        typer.echo(f"closure 완료: 0건, blocked={artifact.blocked_reason or 'none'}")
+        return
+    typer.echo(
+        "closure 완료: "
+        f"closed={artifact.closed_task_count}, remaining={artifact.remaining_task_count} -> team={artifact.closure_team}"
+    )
 
 
 if __name__ == "__main__":

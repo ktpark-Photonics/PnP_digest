@@ -559,7 +559,12 @@
         "review",
         "render",
         "release",
-        "publish"
+        "publish",
+        "retry",
+        "handoff",
+        "followup",
+        "escalation",
+        "closure"
       ],
       "title": "StageName",
       "type": "string"

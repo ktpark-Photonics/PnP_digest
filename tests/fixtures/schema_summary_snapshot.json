@@ -189,6 +189,205 @@
       "publish_records"
     ]
   },
+  "PublishRetryManifest": {
+    "required": [
+      "run",
+      "run_id",
+      "source_publish_review_resolution_path",
+      "review_signoff",
+      "generated_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_publish_review_resolution_path",
+      "review_signoff",
+      "reviewer",
+      "generated_at",
+      "blocked_reason",
+      "retry_count",
+      "items"
+    ]
+  },
+  "OpsClosureReport": {
+    "required": [
+      "run",
+      "run_id",
+      "source_escalation_resolution_path",
+      "closure_team",
+      "generated_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_escalation_resolution_path",
+      "closure_team",
+      "generated_at",
+      "blocked_reason",
+      "closed_task_count",
+      "remaining_task_count",
+      "closed_tasks",
+      "remaining_tasks"
+    ]
+  },
+  "OpsClosureResolutionArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_closure_report_path",
+      "imported_csv_path",
+      "imported_at",
+      "closure_team"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_closure_report_path",
+      "imported_csv_path",
+      "imported_at",
+      "closure_team",
+      "blocked_reason",
+      "closed_task_count",
+      "remaining_task_count",
+      "closed_tasks",
+      "remaining_tasks"
+    ]
+  },
+  "OpsEscalationManifest": {
+    "required": [
+      "run",
+      "run_id",
+      "source_followup_resolution_path",
+      "escalation_team",
+      "generated_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_followup_resolution_path",
+      "escalation_team",
+      "generated_at",
+      "blocked_reason",
+      "in_review_task_count",
+      "tasks"
+    ]
+  },
+  "OpsEscalationResolutionArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_escalation_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "escalation_team"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_escalation_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "escalation_team",
+      "blocked_reason",
+      "open_task_count",
+      "in_review_task_count",
+      "closed_task_count",
+      "tasks"
+    ]
+  },
+  "OpsFollowupManifest": {
+    "required": [
+      "run",
+      "run_id",
+      "source_ops_handoff_resolution_path",
+      "followup_team",
+      "generated_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_ops_handoff_resolution_path",
+      "followup_team",
+      "generated_at",
+      "blocked_reason",
+      "open_task_count",
+      "in_review_task_count",
+      "tasks"
+    ]
+  },
+  "OpsFollowupResolutionArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_followup_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "followup_team"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_followup_manifest_path",
+      "imported_csv_path",
+      "imported_at",
+      "followup_team",
+      "blocked_reason",
+      "open_task_count",
+      "in_review_task_count",
+      "closed_task_count",
+      "tasks"
+    ]
+  },
+  "OpsHandoffArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_retry_manifest_path",
+      "handoff_team",
+      "generated_at"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_retry_manifest_path",
+      "handoff_team",
+      "generated_at",
+      "blocked_reason",
+      "open_task_count",
+      "tasks"
+    ]
+  },
+  "OpsHandoffResolutionArtifact": {
+    "required": [
+      "run",
+      "run_id",
+      "source_ops_handoff_path",
+      "imported_csv_path",
+      "imported_at",
+      "handoff_team"
+    ],
+    "properties": [
+      "schema_version",
+      "run",
+      "run_id",
+      "source_ops_handoff_path",
+      "imported_csv_path",
+      "imported_at",
+      "handoff_team",
+      "blocked_reason",
+      "open_task_count",
+      "closed_task_count",
+      "tasks"
+    ]
+  },
   "ManualReviewManifest": {
     "required": [
       "run_id"

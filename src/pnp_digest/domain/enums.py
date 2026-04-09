@@ -23,6 +23,11 @@ class StageName(StrEnum):
     RENDER = "render"
     RELEASE = "release"
     PUBLISH = "publish"
+    RETRY = "retry"
+    HANDOFF = "handoff"
+    FOLLOWUP = "followup"
+    ESCALATION = "escalation"
+    CLOSURE = "closure"
 
 
 class StageExecutionStatus(StrEnum):
